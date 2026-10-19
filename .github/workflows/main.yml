@@ -1,0 +1,35 @@
+name: Realitni Radar Celakovice
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  kontrola:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Stazeni repozitare
+        uses: actions/checkout@v4
+
+      - name: Nastaveni Pythonu
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalace knihoven
+        run: pip install requests beautifulsoup4
+
+      - name: Spusteni radaru
+        run: python hlidac_celakovice.py
+
+      - name: Ulozeni historie inzeratu
+        run: |
+          git config --global user.name "Realitni Radar"
+          git config --global user.email "radar@celakovice.local"
+          git add videne_inzeraty.json || true
+          git diff --staged --quiet || git commit -m "Aktualizace videnych inzeratu"
+          git push
