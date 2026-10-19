@@ -6,9 +6,6 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import re
 
-# ==========================================
-# KONFIGURACE
-# ==========================================
 PSC = "25088"
 NTFY_TOPIC = "celakovice_radar_7741"
 DB_FILE = "databaze_nemovitosti.json"
@@ -19,7 +16,7 @@ HEADERS = {
     "Accept-Language": "cs-CZ,cs;q=0.9"
 }
 
-# Projdeme hlavní kategorie nemovitostí
+# Kategorie pro Sreality (ID kategorie, SEO název)
 KATEGORIE_SREALITY = {
     1: ("Byt", "byt"),
     2: ("Dům", "dum"),
@@ -36,7 +33,6 @@ BAZOS_SEKCE = [
     ("Chata", "https://reality.bazos.cz/prodam/chata/")
 ]
 
-
 def nacti_db():
     if os.path.exists(DB_FILE):
         try:
@@ -46,17 +42,14 @@ def nacti_db():
             return {}
     return {}
 
-
 def uloz_db(db):
     with open(DB_FILE, "w", encoding="utf-8") as f:
         json.dump(db, f, ensure_ascii=False, indent=2)
-
 
 def vytvor_fingerprint(cena_str, nazev):
     cista_cena = re.sub(r"\D", "", str(cena_str))
     cisty_nazev = re.sub(r"[^\w\s]", "", nazev.lower()).strip()
     return f"{cista_cena}_{cisty_nazev[:15]}"
-
 
 def posli_notifikaci(titulek, cena_text, url, zdroj):
     zprava = f"Cena: {cena_text}\nZdroj: {zdroj}\nOdkaz: {url}"
@@ -75,7 +68,6 @@ def posli_notifikaci(titulek, cena_text, url, zdroj):
         time.sleep(0.5)
     except Exception as e:
         print(f"[CHYBA NOTIFIKACE] {e}")
-
 
 def generuj_readme(db):
     dnes = datetime.now().strftime("%Y-%m-%d %H:%M")
@@ -105,36 +97,36 @@ def generuj_readme(db):
     with open(README_FILE, "w", encoding="utf-8") as f:
         f.write(obsah)
 
-
 def main():
     db = nacti_db()
     dnes = datetime.now().strftime("%Y-%m-%d")
     nalezene_ids = set()
     existujici_fingerprints = {item.get("fingerprint"): uid for uid, item in db.items() if "fingerprint" in item}
 
-    # 1. SREALITY (Prohledáme širší nabídku Středočeského kraje a vyfiltrujeme Čelákovice v textu)
+    # 1. SREALITY - Přímý dotaz na Čelákovice (lokalita ID pro Čelákovice v Srealitách je 508)
     timestamp = int(time.time() * 1000)
     for cat_id, (cat_nazev, cat_seo) in KATEGORIE_SREALITY.items():
-        # Stáhneme až 150 inzerátů z kraje, abychom pokryli i novější položky
         api_url = (
             f"https://www.sreality.cz/api/cs/v2/estates?"
             f"category_main_cb={cat_id}&category_type_cb=1&"
-            f"locality_region_id=11&per_page=150&tms={timestamp}"
+            f"locality_region_id=508&per_page=60&tms={timestamp}"
         )
         try:
             r = requests.get(api_url, headers=HEADERS, timeout=15)
             if r.status_code != 200:
-                continue
-            for item in r.json().get("_embedded", {}).get("estates", []):
-                lokalita = item.get("locality", "")
-                nazev = item.get("name", cat_nazev)
-                
-                # Zkontrolujeme, zda se "čelákovice" objevují v lokalitě nebo v názvu inzerátu
-                TEXT_K_PROVERENI = f"{lokalita} {nazev}".lower()
-                if "čelákovic" not in TEXT_K_PROVERENI and "celakovic" not in TEXT_K_PROVERENI:
+                # Zkusíme alternativní dotaz přes text, pokud regionální ID selže
+                api_url_alt = (
+                    f"https://www.sreality.cz/api/cs/v2/estates?"
+                    f"category_main_cb={cat_id}&category_type_cb=1&"
+                    f"locality_text=Čelákovice&per_page=60&tms={timestamp}"
+                )
+                r = requests.get(api_url_alt, headers=HEADERS, timeout=15)
+                if r.status_code != 200:
                     continue
 
+            for item in r.json().get("_embedded", {}).get("estates", []):
                 uid = f"sr_{item.get('hash_id')}"
+                nazev = item.get("name", cat_nazev)
                 cena = item.get("price", 0)
                 cena_format = f"{cena:,} Kč".replace(",", " ") if cena > 0 else "Info v RK"
                 web_url = f"https://www.sreality.cz/detail/prodej/{cat_seo}/detail/celakovice/{item.get('hash_id')}"
@@ -149,7 +141,7 @@ def main():
 
                 if uid not in db:
                     db[uid] = {
-                        "title": f"[{cat_nazev}] {nazev}",
+                        "title": f"[Sreality {cat_nazev}] {nazev}",
                         "price": cena_format,
                         "url": web_url,
                         "source": "Sreality.cz",
@@ -158,7 +150,7 @@ def main():
                         "fingerprint": fp
                     }
                     existujici_fingerprints[fp] = uid
-                    posli_notifikaci(f"[{cat_nazev}] {nazev}", cena_format, web_url, "Sreality.cz")
+                    posli_notifikaci(f"[Sreality {cat_nazev}] {nazev}", cena_format, web_url, "Sreality.cz")
                 else:
                     db[uid]["status"] = "✅ Aktivní"
         except Exception as e:
@@ -224,7 +216,6 @@ def main():
 
     uloz_db(db)
     generuj_readme(db)
-
 
 if __name__ == "__main__":
     main()
