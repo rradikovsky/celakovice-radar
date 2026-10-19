@@ -6,10 +6,10 @@ import requests
 from bs4 import BeautifulSoup
 
 # ==========================================
-# KONFIGURACE (VŠECHNY NEMOVITOSTI ČELÁKOVICE)
+# KONFIGURACE (VŠECHNY PORTÁLY - ČELÁKOVICE)
 # ==========================================
 PSC = "25088"
-# Změň si název na ten, který máš v mobilu v aplikaci ntfy:
+# Tvé téma pro ntfy v mobilu:
 NTFY_TOPIC = "celakovice_radar_7741"
 DB_FILE = "videne_inzeraty.json"
 
@@ -147,20 +147,50 @@ def zkontroluj_bazos(historie, prvni_spusteni):
             print(f"[CHYBA BAZOŠ {kat_nazev}] {e}")
 
 
+def zkontroluj_bezrealitky(historie, prvni_spusteni):
+    url = "https://www.bezrealitky.cz/s/celakovice"
+    try:
+        r = requests.get(url, headers=HEADERS, timeout=15)
+        if r.status_code != 200:
+            return
+        soup = BeautifulSoup(r.text, "html.parser")
+        
+        # Hledání inzerátů na Bezrealitkách
+        for a_tag in soup.find_all("a", href=True):
+            href = a_tag["href"]
+            if "/nemovitosti-byty-domy/" in href or "/inzerat/" in href:
+                plna_url = href if href.startswith("http") else f"https://www.bezrealitky.cz{href}"
+                text = a_tag.text.strip()
+                
+                if len(text) < 10:
+                    continue
+                
+                inz_id = f"br_{href}"
+                if inz_id in historie:
+                    continue
+                
+                if not prvni_spusteni:
+                    posli_notifikaci("[Bezrealitky] Nová nabídka", "Cena v detailu", plna_url, "Bezrealitky.cz")
+                historie.add(inz_id)
+    except Exception as e:
+        print(f"[CHYBA BEZREALITKY] {e}")
+
+
 def main():
     historie, prvni_spusteni = nacti_historii()
     pocet_pred = len(historie)
 
     zkontroluj_sreality(historie, prvni_spusteni)
     zkontroluj_bazos(historie, prvni_spusteni)
+    zkontroluj_bezrealitky(historie, prvni_spusteni)
 
     nove = len(historie) - pocet_pred
     if nove > 0 or prvni_spusteni:
         uloz_historii(historie)
         if prvni_spusteni:
             posli_notifikaci(
-                "Radar Čelákovice AKTIVOVÁN",
-                f"Uloženo {len(historie)} stávajících inzerátů. Další už budou pípat živě.",
+                "Radar Čelákovice (Všechny portály)",
+                f"Uloženo {len(historie)} stávajících inzerátů ze Srealit, Bazoše a Bezrealitek.",
                 "https://www.sreality.cz",
                 "GitHub Actions"
             )
