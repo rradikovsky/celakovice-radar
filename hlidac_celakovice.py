@@ -1,17 +1,17 @@
 import json
 import os
-import re
 import time
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime
 
 # ==========================================
-# KONFIGURACE (VŠECHNY PORTÁLY - ČELÁKOVICE)
+# KONFIGURACE
 # ==========================================
 PSC = "25088"
-# Tvé téma pro ntfy v mobilu:
-NTFY_TOPIC = "celakovice_radar_7741"
-DB_FILE = "videne_inzeraty.json"
+NTFY_TOPIC = "celakovice_radar_7741"  # Tvůj ntfy kanál
+DB_FILE = "databaze_nemovitosti.json"
+README_FILE = "README.md"
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
@@ -35,20 +35,19 @@ BAZOS_SEKCE = [
 ]
 
 
-def nacti_historii():
+def nacti_db():
     if os.path.exists(DB_FILE):
         try:
             with open(DB_FILE, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                return set(data), False
+                return json.load(f)
         except Exception:
-            return set(), True
-    return set(), True
+            return {}
+    return {}
 
 
-def uloz_historii(historie):
+def uloz_db(db):
     with open(DB_FILE, "w", encoding="utf-8") as f:
-        json.dump(sorted(list(historie)), f, ensure_ascii=False, indent=2)
+        json.dump(db, f, ensure_ascii=False, indent=2)
 
 
 def posli_notifikaci(titulek, cena_text, url, zdroj):
@@ -58,7 +57,7 @@ def posli_notifikaci(titulek, cena_text, url, zdroj):
             f"https://ntfy.sh/{NTFY_TOPIC}",
             data=zprava.encode("utf-8"),
             headers={
-                "Title": f"{titulek}".encode("utf-8"),
+                "Title": f"🔥 {titulek}".encode("utf-8"),
                 "Priority": "high",
                 "Tags": "house",
                 "Click": url
@@ -70,7 +69,45 @@ def posli_notifikaci(titulek, cena_text, url, zdroj):
         print(f"[CHYBA NOTIFIKACE] {e}")
 
 
-def zkontroluj_sreality(historie, prvni_spusteni):
+def generuj_readme(db):
+    """Vytvoří krásnou přehlednou tabulku na hlavní stránce repozitáře."""
+    dnes = datetime.now().strftime("%Y-%m-%d %H:%M")
+    
+    obsah = f"# 🏠 Realitní Radar Čelákovice\n\n"
+    obsah += f"Poslední aktualizace: **{dnes}**\n\n"
+    obsah += "| Status | Název / Odkaz | Cena | Zdroj | První výskyt |\n"
+    obsah += "| :--- | :--- | :--- | :--- | :--- |\n"
+
+    # Seřazení: Nejprve novinky a aktivní, pak stažené
+    seazene_polozky = sorted(
+        db.values(), 
+        key=lambda x: (0 if x['status'] in ["🔥 Novinka", "✅ Aktivní"] else 1, x['first_seen']), 
+        reverse=True
+    )
+
+    for item in seazene_polozky:
+        status = item['status']
+        nazev = item['title'].replace("|", "-")
+        url = item['url']
+        cena = item['price']
+        zdroj = item['source']
+        datum = item['first_seen']
+
+        link_markdown = f"[{nazev}]({url})"
+        obsah += f"| **{status}** | {link_markdown} | {cena} | {zdroj} | {datum} |\n"
+
+    with open(README_FILE, "w", encoding="utf-8") as f:
+        f.write(obsah)
+
+
+def main():
+    db = nacti_db()
+    dnes = datetime.now().strftime("%Y-%m-%d")
+    
+    # Označíme všechny stávající záznamy jako "Aktivní", dokud je nezkontrolujeme
+    nalezene_ids = set()
+
+    # 1. SREALITY
     timestamp = int(time.time() * 1000)
     for cat_id, (cat_nazev, cat_seo) in KATEGORIE_SREALITY.items():
         api_url = (
@@ -82,30 +119,39 @@ def zkontroluj_sreality(historie, prvni_spusteni):
             r = requests.get(api_url, headers=HEADERS, timeout=15)
             if r.status_code != 200:
                 continue
-            estates = r.json().get("_embedded", {}).get("estates", [])
-
-            for item in estates:
-                lokalita = item.get("locality", "")
-                if "čelákovice" not in lokalita.lower():
+            for item in r.json().get("_embedded", {}).get("estates", []):
+                if "čelákovice" not in item.get("locality", "").lower():
                     continue
 
-                hash_id = f"sr_{item.get('hash_id')}"
-                if hash_id in historie:
-                    continue
+                uid = f"sr_{item.get('hash_id')}"
+                nalezene_ids.add(uid)
 
                 nazev = item.get("name", cat_nazev)
                 cena = item.get("price", 0)
                 cena_format = f"{cena:,} Kč".replace(",", " ") if cena > 0 else "Info v RK"
                 web_url = f"https://www.sreality.cz/detail/prodej/{cat_seo}/detail/celakovice/{item.get('hash_id')}"
 
-                if not prvni_spusteni:
+                if uid not in db:
+                    # Zbrusu nová nemovitost!
+                    db[uid] = {
+                        "title": f"[{cat_nazev}] {nazev}",
+                        "price": cena_format,
+                        "url": web_url,
+                        "source": "Sreality.cz",
+                        "status": "🔥 Novinka",
+                        "first_seen": dnes
+                    }
                     posli_notifikaci(f"[{cat_nazev}] {nazev}", cena_format, web_url, "Sreality.cz")
-                historie.add(hash_id)
+                else:
+                    # Už ji známe, nastavíme jako aktivní (pokud nebyla stažená)
+                    if db[uid]["status"] == "❌ Staženo z inzerce":
+                        db[uid]["status"] = "✅ Aktivní"
+                    else:
+                        db[uid]["status"] = "✅ Aktivní"
         except Exception as e:
-            print(f"[CHYBA SREALITY {cat_nazev}] {e}")
+            print(f"[CHYBA SREALITY] {e}")
 
-
-def zkontroluj_bazos(historie, prvni_spusteni):
+    # 2. BAZOŠ
     for kat_nazev, base_url in BAZOS_SEKCE:
         url = f"{base_url}?hledat=&hlokalita={PSC}&humkreis=2"
         try:
@@ -113,87 +159,51 @@ def zkontroluj_bazos(historie, prvni_spusteni):
             if r.status_code != 200:
                 continue
             soup = BeautifulSoup(r.text, "html.parser")
-            inzeraty = soup.find_all("div", class_="inzeraty")
-
-            for inz in inzeraty:
+            for inz in soup.find_all("div", class_="inzeraty"):
                 nadpis_el = inz.find("h2", class_="nadpis")
                 if not nadpis_el or not nadpis_el.find("a"):
                     continue
-
                 a_tag = nadpis_el.find("a")
                 titulek = a_tag.text.strip()
                 rel_link = a_tag["href"]
                 plna_url = f"https://reality.bazos.cz{rel_link}"
+                popis = inz.find("div", class_="popis")
+                popis_text = popis.text.strip() if popis else ""
 
-                popis_el = inz.find("div", class_="popis")
-                popis = popis_el.text.strip() if popis_el else ""
-
-                if "čelákovic" not in titulek.lower() and "čelákovic" not in popis.lower():
+                if "čelákovic" not in titulek.lower() and "čelákovic" not in popis_text.lower():
                     continue
 
+                import re
                 match_id = re.search(r"/inzerat/(\d+)/", rel_link)
-                inz_id = f"bz_{match_id.group(1)}" if match_id else f"bz_{rel_link}"
-
-                if inz_id in historie:
-                    continue
+                uid = f"bz_{match_id.group(1)}" if match_id else f"bz_{rel_link}"
+                nalezene_ids.add(uid)
 
                 cena_el = inz.find("div", class_="inzeratycena")
                 cena_text = cena_el.text.strip() if cena_el else "Neuvedena"
 
-                if not prvni_spusteni:
+                if uid not in db:
+                    db[uid] = {
+                        "title": f"[Bazoš {kat_nazev}] {titulek}",
+                        "price": cena_text,
+                        "url": plna_url,
+                        "source": "Bazoš.cz",
+                        "status": "🔥 Novinka",
+                        "first_seen": dnes
+                    }
                     posli_notifikaci(f"[Bazoš {kat_nazev}] {titulek}", cena_text, plna_url, "Bazoš.cz")
-                historie.add(inz_id)
+                else:
+                    db[uid]["status"] = "✅ Aktivní"
         except Exception as e:
-            print(f"[CHYBA BAZOŠ {kat_nazev}] {e}")
+            print(f"[CHYBA BAZOŠ] {e}")
 
+    # 3. Kontrola, co mezitím zmizelo (staženo z inzerce)
+    for uid in db:
+        if uid not in nalezene_ids and db[uid]["status"] not in ["❌ Staženo z inzerce"]:
+            db[uid]["status"] = "❌ Staženo z inzerce"
 
-def zkontroluj_bezrealitky(historie, prvni_spusteni):
-    url = "https://www.bezrealitky.cz/s/celakovice"
-    try:
-        r = requests.get(url, headers=HEADERS, timeout=15)
-        if r.status_code != 200:
-            return
-        soup = BeautifulSoup(r.text, "html.parser")
-        
-        # Hledání inzerátů na Bezrealitkách
-        for a_tag in soup.find_all("a", href=True):
-            href = a_tag["href"]
-            if "/nemovitosti-byty-domy/" in href or "/inzerat/" in href:
-                plna_url = href if href.startswith("http") else f"https://www.bezrealitky.cz{href}"
-                text = a_tag.text.strip()
-                
-                if len(text) < 10:
-                    continue
-                
-                inz_id = f"br_{href}"
-                if inz_id in historie:
-                    continue
-                
-                if not prvni_spusteni:
-                    posli_notifikaci("[Bezrealitky] Nová nabídka", "Cena v detailu", plna_url, "Bezrealitky.cz")
-                historie.add(inz_id)
-    except Exception as e:
-        print(f"[CHYBA BEZREALITKY] {e}")
-
-
-def main():
-    historie, prvni_spusteni = nacti_historii()
-    pocet_pred = len(historie)
-
-    zkontroluj_sreality(historie, prvni_spusteni)
-    zkontroluj_bazos(historie, prvni_spusteni)
-    zkontroluj_bezrealitky(historie, prvni_spusteni)
-
-    nove = len(historie) - pocet_pred
-    if nove > 0 or prvni_spusteni:
-        uloz_historii(historie)
-        if prvni_spusteni:
-            posli_notifikaci(
-                "Radar Čelákovice (Všechny portály)",
-                f"Uloženo {len(historie)} stávajících inzerátů ze Srealit, Bazoše a Bezrealitek.",
-                "https://www.sreality.cz",
-                "GitHub Actions"
-            )
+    # Uložení databáze a generování vizuální tabulky do README.md
+    uloz_db(db)
+    generuj_readme(db)
 
 
 if __name__ == "__main__":
