@@ -16,15 +16,6 @@ HEADERS = {
     "Accept-Language": "cs-CZ,cs;q=0.9"
 }
 
-# Kategorie pro Sreality (ID kategorie, SEO název)
-KATEGORIE_SREALITY = {
-    1: ("Byt", "byt"),
-    2: ("Dům", "dum"),
-    3: ("Pozemek", "pozemek"),
-    4: ("Komerční", "komercni"),
-    5: ("Ostatní/Garáž", "ostatni")
-}
-
 BAZOS_SEKCE = [
     ("Byt", "https://reality.bazos.cz/prodam/byt/"),
     ("Dům", "https://reality.bazos.cz/prodam/dum/"),
@@ -103,60 +94,7 @@ def main():
     nalezene_ids = set()
     existujici_fingerprints = {item.get("fingerprint"): uid for uid, item in db.items() if "fingerprint" in item}
 
-    # 1. SREALITY - Přímý dotaz na Čelákovice (lokalita ID pro Čelákovice v Srealitách je 508)
-    timestamp = int(time.time() * 1000)
-    for cat_id, (cat_nazev, cat_seo) in KATEGORIE_SREALITY.items():
-        api_url = (
-            f"https://www.sreality.cz/api/cs/v2/estates?"
-            f"category_main_cb={cat_id}&category_type_cb=1&"
-            f"locality_region_id=508&per_page=60&tms={timestamp}"
-        )
-        try:
-            r = requests.get(api_url, headers=HEADERS, timeout=15)
-            if r.status_code != 200:
-                # Zkusíme alternativní dotaz přes text, pokud regionální ID selže
-                api_url_alt = (
-                    f"https://www.sreality.cz/api/cs/v2/estates?"
-                    f"category_main_cb={cat_id}&category_type_cb=1&"
-                    f"locality_text=Čelákovice&per_page=60&tms={timestamp}"
-                )
-                r = requests.get(api_url_alt, headers=HEADERS, timeout=15)
-                if r.status_code != 200:
-                    continue
-
-            for item in r.json().get("_embedded", {}).get("estates", []):
-                uid = f"sr_{item.get('hash_id')}"
-                nazev = item.get("name", cat_nazev)
-                cena = item.get("price", 0)
-                cena_format = f"{cena:,} Kč".replace(",", " ") if cena > 0 else "Info v RK"
-                web_url = f"https://www.sreality.cz/detail/prodej/{cat_seo}/detail/celakovice/{item.get('hash_id')}"
-                
-                fp = vytvor_fingerprint(cena, nazev)
-
-                if fp in existujici_fingerprints and existujici_fingerprints[fp] != uid:
-                    nalezene_ids.add(existujici_fingerprints[fp])
-                    continue
-
-                nalezene_ids.add(uid)
-
-                if uid not in db:
-                    db[uid] = {
-                        "title": f"[Sreality {cat_nazev}] {nazev}",
-                        "price": cena_format,
-                        "url": web_url,
-                        "source": "Sreality.cz",
-                        "status": "🔥 Novinka",
-                        "first_seen": dnes,
-                        "fingerprint": fp
-                    }
-                    existujici_fingerprints[fp] = uid
-                    posli_notifikaci(f"[Sreality {cat_nazev}] {nazev}", cena_format, web_url, "Sreality.cz")
-                else:
-                    db[uid]["status"] = "✅ Aktivní"
-        except Exception as e:
-            print(f"[CHYBA SREALITY] {e}")
-
-    # 2. BAZOŠ
+    # Prohledání Bazoše (spolehlivé, okamžité)
     for kat_nazev, base_url in BAZOS_SEKCE:
         url = f"{base_url}?hledat=&hlokalita={PSC}&humkreis=2"
         try:
@@ -209,7 +147,7 @@ def main():
         except Exception as e:
             print(f"[CHYBA BAZOŠ] {e}")
 
-    # 3. Kontrola stažených inzerátů
+    # Kontrola stažených inzerátů
     for uid in db:
         if uid not in nalezene_ids and db[uid]["status"] not in ["❌ Staženo z inzerce"]:
             db[uid]["status"] = "❌ Staženo z inzerce"
