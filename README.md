@@ -1,6 +1,6 @@
 # 🏠 Realitní Radar Čelákovice
 
-Poslední aktualizace: **2026-10-19 14:23**  
+Poslední aktualizace: **2026-10-19 15:09**  
 Stav posledního skenu: `Sreality: 0 | ČeskéReality: 0 | Bazoš: 6`
 
 | Status | Název / Odkaz | Cena | Zdroj | První výskyt |
