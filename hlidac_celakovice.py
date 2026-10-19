@@ -4,6 +4,7 @@ import time
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+import re
 
 # ==========================================
 # KONFIGURACE
@@ -50,6 +51,14 @@ def uloz_db(db):
         json.dump(db, f, ensure_ascii=False, indent=2)
 
 
+def vytvor_fingerprint(cena_str, nazev):
+    """Vytvoří unifikovaný klíč pro odhalení duplicit napříč portály (např. Sreality vs Bazoš)."""
+    cista_cena = re.sub(r"\D", "", str(cena_str))
+    cisty_nazev = re.sub(r"[^\w\s]", "", nazev.lower()).strip()
+    # Vezmeme číselnou cenu a prvních 15 znaků názvu
+    return f"{cista_cena}_{cisty_nazev[:15]}"
+
+
 def posli_notifikaci(titulek, cena_text, url, zdroj):
     zprava = f"Cena: {cena_text}\nZdroj: {zdroj}\nOdkaz: {url}"
     try:
@@ -70,7 +79,6 @@ def posli_notifikaci(titulek, cena_text, url, zdroj):
 
 
 def generuj_readme(db):
-    """Vytvoří krásnou přehlednou tabulku na hlavní stránce repozitáře."""
     dnes = datetime.now().strftime("%Y-%m-%d %H:%M")
     
     obsah = f"# 🏠 Realitní Radar Čelákovice\n\n"
@@ -78,7 +86,6 @@ def generuj_readme(db):
     obsah += "| Status | Název / Odkaz | Cena | Zdroj | První výskyt |\n"
     obsah += "| :--- | :--- | :--- | :--- | :--- |\n"
 
-    # Seřazení: Nejprve novinky a aktivní, pak stažené
     seazene_polozky = sorted(
         db.values(), 
         key=lambda x: (0 if x['status'] in ["🔥 Novinka", "✅ Aktivní"] else 1, x['first_seen']), 
@@ -103,51 +110,53 @@ def generuj_readme(db):
 def main():
     db = nacti_db()
     dnes = datetime.now().strftime("%Y-%m-%d")
-    
-    # Označíme všechny stávající záznamy jako "Aktivní", dokud je nezkontrolujeme
     nalezene_ids = set()
+    existujici_fingerprints = {item.get("fingerprint"): uid for uid, item in db.items() if "fingerprint" in item}
 
-    # 1. SREALITY
+    # 1. SREALITY (Cíleno přímo na Čelákovice přes API)
     timestamp = int(time.time() * 1000)
     for cat_id, (cat_nazev, cat_seo) in KATEGORIE_SREALITY.items():
         api_url = (
             f"https://www.sreality.cz/api/cs/v2/estates?"
             f"category_main_cb={cat_id}&category_type_cb=1&"
-            f"locality_region_id=11&per_page=60&tms={timestamp}"
+            f"locality_text=Čelákovice&per_page=60&tms={timestamp}"
         )
         try:
             r = requests.get(api_url, headers=HEADERS, timeout=15)
             if r.status_code != 200:
                 continue
             for item in r.json().get("_embedded", {}).get("estates", []):
-                if "čelákovice" not in item.get("locality", "").lower():
-                    continue
-
                 uid = f"sr_{item.get('hash_id')}"
-                nalezene_ids.add(uid)
-
+                
                 nazev = item.get("name", cat_nazev)
                 cena = item.get("price", 0)
                 cena_format = f"{cena:,} Kč".replace(",", " ") if cena > 0 else "Info v RK"
                 web_url = f"https://www.sreality.cz/detail/prodej/{cat_seo}/detail/celakovice/{item.get('hash_id')}"
+                
+                fp = vytvor_fingerprint(cena, nazev)
+
+                # Kontrola duplicity napříč portály
+                if fp in existujici_fingerprints and existujici_fingerprints[fp] != uid:
+                    # Nemovitost už evidujeme pod jiným ID (např. z Bazoše), přeskočíme duplicitní zápis
+                    nalezene_ids.add(existujici_fingerprints[fp])
+                    continue
+
+                nalezene_ids.add(uid)
 
                 if uid not in db:
-                    # Zbrusu nová nemovitost!
                     db[uid] = {
                         "title": f"[{cat_nazev}] {nazev}",
                         "price": cena_format,
                         "url": web_url,
                         "source": "Sreality.cz",
                         "status": "🔥 Novinka",
-                        "first_seen": dnes
+                        "first_seen": dnes,
+                        "fingerprint": fp
                     }
+                    existujici_fingerprints[fp] = uid
                     posli_notifikaci(f"[{cat_nazev}] {nazev}", cena_format, web_url, "Sreality.cz")
                 else:
-                    # Už ji známe, nastavíme jako aktivní (pokud nebyla stažená)
-                    if db[uid]["status"] == "❌ Staženo z inzerce":
-                        db[uid]["status"] = "✅ Aktivní"
-                    else:
-                        db[uid]["status"] = "✅ Aktivní"
+                    db[uid]["status"] = "✅ Aktivní"
         except Exception as e:
             print(f"[CHYBA SREALITY] {e}")
 
@@ -173,13 +182,19 @@ def main():
                 if "čelákovic" not in titulek.lower() and "čelákovic" not in popis_text.lower():
                     continue
 
-                import re
                 match_id = re.search(r"/inzerat/(\d+)/", rel_link)
                 uid = f"bz_{match_id.group(1)}" if match_id else f"bz_{rel_link}"
-                nalezene_ids.add(uid)
-
+                
                 cena_el = inz.find("div", class_="inzeratycena")
                 cena_text = cena_el.text.strip() if cena_el else "Neuvedena"
+
+                fp = vytvor_fingerprint(cena_text, titulek)
+
+                if fp in existujici_fingerprints and existujici_fingerprints[fp] != uid:
+                    nalezene_ids.add(existujici_fingerprints[fp])
+                    continue
+
+                nalezene_ids.add(uid)
 
                 if uid not in db:
                     db[uid] = {
@@ -188,20 +203,21 @@ def main():
                         "url": plna_url,
                         "source": "Bazoš.cz",
                         "status": "🔥 Novinka",
-                        "first_seen": dnes
+                        "first_seen": dnes,
+                        "fingerprint": fp
                     }
+                    existujici_fingerprints[fp] = uid
                     posli_notifikaci(f"[Bazoš {kat_nazev}] {titulek}", cena_text, plna_url, "Bazoš.cz")
                 else:
                     db[uid]["status"] = "✅ Aktivní"
         except Exception as e:
             print(f"[CHYBA BAZOŠ] {e}")
 
-    # 3. Kontrola, co mezitím zmizelo (staženo z inzerce)
+    # 3. Kontrola stažených inzerátů
     for uid in db:
         if uid not in nalezene_ids and db[uid]["status"] not in ["❌ Staženo z inzerce"]:
             db[uid]["status"] = "❌ Staženo z inzerce"
 
-    # Uložení databáze a generování vizuální tabulky do README.md
     uloz_db(db)
     generuj_readme(db)
 
