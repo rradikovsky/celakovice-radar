@@ -9,7 +9,7 @@ from bs4 import BeautifulSoup
 # KONFIGURACE (VŠECHNY NEMOVITOSTI ČELÁKOVICE)
 # ==========================================
 PSC = "25088"
-# Změň si číslo na konci na vlastní tajnou kombinaci (stejnou zadej v mobilu do apky ntfy)
+# Změň si název na ten, který máš v mobilu v aplikaci ntfy:
 NTFY_TOPIC = "celakovice_radar_7741"
 DB_FILE = "videne_inzeraty.json"
 
@@ -72,7 +72,6 @@ def posli_notifikaci(titulek, cena_text, url, zdroj):
 
 def zkontroluj_sreality(historie, prvni_spusteni):
     timestamp = int(time.time() * 1000)
-    # Středočeský kraj (locality_region_id=11), Prodej (category_type_cb=1)
     for cat_id, (cat_nazev, cat_seo) in KATEGORIE_SREALITY.items():
         api_url = (
             f"https://www.sreality.cz/api/cs/v2/estates?"
