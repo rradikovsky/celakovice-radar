@@ -10,7 +10,7 @@ import re
 # KONFIGURACE
 # ==========================================
 PSC = "25088"
-NTFY_TOPIC = "celakovice_radar_7741"  # Tvůj ntfy kanál
+NTFY_TOPIC = "celakovice_radar_7741"
 DB_FILE = "databaze_nemovitosti.json"
 README_FILE = "README.md"
 
@@ -19,6 +19,7 @@ HEADERS = {
     "Accept-Language": "cs-CZ,cs;q=0.9"
 }
 
+# Projdeme hlavní kategorie nemovitostí
 KATEGORIE_SREALITY = {
     1: ("Byt", "byt"),
     2: ("Dům", "dum"),
@@ -52,10 +53,8 @@ def uloz_db(db):
 
 
 def vytvor_fingerprint(cena_str, nazev):
-    """Vytvoří unifikovaný klíč pro odhalení duplicit napříč portály (např. Sreality vs Bazoš)."""
     cista_cena = re.sub(r"\D", "", str(cena_str))
     cisty_nazev = re.sub(r"[^\w\s]", "", nazev.lower()).strip()
-    # Vezmeme číselnou cenu a prvních 15 znaků názvu
     return f"{cista_cena}_{cisty_nazev[:15]}"
 
 
@@ -113,31 +112,36 @@ def main():
     nalezene_ids = set()
     existujici_fingerprints = {item.get("fingerprint"): uid for uid, item in db.items() if "fingerprint" in item}
 
-    # 1. SREALITY (Cíleno přímo na Čelákovice přes API)
+    # 1. SREALITY (Prohledáme širší nabídku Středočeského kraje a vyfiltrujeme Čelákovice v textu)
     timestamp = int(time.time() * 1000)
     for cat_id, (cat_nazev, cat_seo) in KATEGORIE_SREALITY.items():
+        # Stáhneme až 150 inzerátů z kraje, abychom pokryli i novější položky
         api_url = (
             f"https://www.sreality.cz/api/cs/v2/estates?"
             f"category_main_cb={cat_id}&category_type_cb=1&"
-            f"locality_text=Čelákovice&per_page=60&tms={timestamp}"
+            f"locality_region_id=11&per_page=150&tms={timestamp}"
         )
         try:
             r = requests.get(api_url, headers=HEADERS, timeout=15)
             if r.status_code != 200:
                 continue
             for item in r.json().get("_embedded", {}).get("estates", []):
-                uid = f"sr_{item.get('hash_id')}"
-                
+                lokalita = item.get("locality", "")
                 nazev = item.get("name", cat_nazev)
+                
+                # Zkontrolujeme, zda se "čelákovice" objevují v lokalitě nebo v názvu inzerátu
+                TEXT_K_PROVERENI = f"{lokalita} {nazev}".lower()
+                if "čelákovic" not in TEXT_K_PROVERENI and "celakovic" not in TEXT_K_PROVERENI:
+                    continue
+
+                uid = f"sr_{item.get('hash_id')}"
                 cena = item.get("price", 0)
                 cena_format = f"{cena:,} Kč".replace(",", " ") if cena > 0 else "Info v RK"
                 web_url = f"https://www.sreality.cz/detail/prodej/{cat_seo}/detail/celakovice/{item.get('hash_id')}"
                 
                 fp = vytvor_fingerprint(cena, nazev)
 
-                # Kontrola duplicity napříč portály
                 if fp in existujici_fingerprints and existujici_fingerprints[fp] != uid:
-                    # Nemovitost už evidujeme pod jiným ID (např. z Bazoše), přeskočíme duplicitní zápis
                     nalezene_ids.add(existujici_fingerprints[fp])
                     continue
 
