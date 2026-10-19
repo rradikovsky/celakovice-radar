@@ -1,6 +1,6 @@
 # 🏠 Realitní Radar Čelákovice
 
-Poslední aktualizace: **2026-10-19 11:12**
+Poslední aktualizace: **2026-10-19 11:18**
 
 | Status | Název / Odkaz | Cena | Zdroj | První výskyt |
 | :--- | :--- | :--- | :--- | :--- |
