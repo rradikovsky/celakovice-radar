@@ -60,11 +60,9 @@ def uloz_db(db):
 
 
 def vytvor_fingerprint(cena_str, nazev):
-    """Odhalí duplicitní inzerát napříč portály podle ceny a typu/výměry."""
     cista_cena = re.sub(r"\D", "", str(cena_str))
     if not cista_cena or cista_cena == "0":
         cista_cena = "info"
-    # Vytáhneme metry čtvereční, pokud v názvu jsou (např. "57 m2")
     metry_match = re.search(r"(\d+)\s*m[2²]", nazev.lower())
     metry = metry_match.group(1) if metry_match else ""
     cisty_nazev = re.sub(r"[^\w]", "", nazev.lower())[:12]
@@ -91,22 +89,20 @@ def posli_notifikaci(titulek, cena_text, url, zdroj):
 
 
 def stahni_sreality_json(api_url):
-    """Zkusí stáhnout Sreality napřímo, a pokud blokují USA IP adresu GitHubu, použije proxy."""
     try:
         r = requests.get(api_url, headers=HEADERS, timeout=7)
         if r.status_code == 200 and "_embedded" in r.text:
             return r.json()
     except Exception as e:
-        print(f"Přímé spojení na Sreality selhalo ({e}), zkouším přemostění...")
+        print(f"Prime spojeni na Sreality selhalo ({e}), zkousim premosteni...")
 
-    # Záložní přemostění přes AllOrigins / CorsProxy při blokaci IP adresy GitHubu
     try:
         proxy_url = f"https://api.allorigins.win/raw?url={quote(api_url, safe='')}"
         r = requests.get(proxy_url, timeout=12)
         if r.status_code == 200 and "_embedded" in r.text:
             return r.json()
     except Exception as e:
-        print(f"Záložní spojení na Sreality selhalo: {e}")
+        print(f"Zalozni spojeni na Sreality selhalo: {e}")
 
     return None
 
@@ -148,14 +144,11 @@ def main():
     nalezene_ids = set()
     existujici_fingerprints = {item.get("fingerprint"): uid for uid, item in db.items() if "fingerprint" in item}
 
-     pocty = {"Sreality": 0, "Ceskereality": 0, "Bazos": 0}
+    pocty = {"Sreality": 0, "Ceskereality": 0, "Bazos": 0}
 
-    # =========================================================================
-    # 1. SREALITY.CZ (Okres Praha-východ ID 57 + filtr na Čelákovice)
-    # =========================================================================
+    # 1. SREALITY.CZ
     timestamp = int(time.time() * 1000)
     for cat_id, (cat_nazev, cat_seo) in KATEGORIE_SREALITY.items():
-        # locality_district_id=57 je Praha-východ (kam spadají Čelákovice)
         for page in [1, 2]:
             api_url = (
                 f"https://www.sreality.cz/api/cs/v2/estates?"
@@ -175,7 +168,6 @@ def main():
                 nazev = item.get("name", cat_nazev)
                 seo_loc = item.get("seo", {}).get("locality", "celakovice")
 
-                # Kontrola, zda jde o Čelákovice
                 spojeny_text = f"{lokalita} {nazev} {seo_loc}".lower()
                 if "čelákovic" not in spojeny_text and "celakovic" not in spojeny_text:
                     continue
@@ -208,9 +200,7 @@ def main():
                 else:
                     db[uid]["status"] = "✅ Aktivní"
 
-    # =========================================================================
-    # 2. ČESKÉREALITY.CZ (Spolehlivý agregátor realitních kanceláří v ČR)
-    # =========================================================================
+    # 2. ČESKÉREALITY.CZ
     for kat_nazev, cr_url in CESKEREALITY_SEKCE:
         try:
             r = requests.get(cr_url, headers=HEADERS, timeout=10)
@@ -260,9 +250,7 @@ def main():
         except Exception as e:
             print(f"[CHYBA ČESKÉREALITY] {e}")
 
-    # =========================================================================
     # 3. BAZOŠ.CZ
-    # =========================================================================
     for kat_nazev, base_url in BAZOS_SEKCE:
         url = f"{base_url}?hledat=&hlokalita={PSC}&humkreis=2"
         try:
@@ -315,10 +303,7 @@ def main():
         except Exception as e:
             print(f"[CHYBA BAZOŠ] {e}")
 
-    # =========================================================================
     # 4. KONTROLA STAŽENÝCH INZERÁTŮ
-    # =========================================================================
-    # Inzerát označíme za stažený jen tehdy, pokud příslušný portál při skenu nespadl
     for uid, item in db.items():
         zdroj = item.get("source", "")
         if uid not in nalezene_ids:
