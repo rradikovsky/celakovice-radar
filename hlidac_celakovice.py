@@ -1,31 +1,32 @@
 import json
 import os
+import re
 import time
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
-import re
-from urllib.parse import quote
+from playwright.sync_api import sync_playwright
 
+# ==========================================
+# KONFIGURACE
+# ==========================================
 PSC = "25088"
-NTFY_TOPIC = "celakovice_radar_7741"
+NTFY_TOPIC = "celakovice_radar_7741"  # Tvůj ntfy kanál z mobilu
 DB_FILE = "databaze_nemovitosti.json"
 README_FILE = "README.md"
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
-    "Accept": "application/json, text/plain, */*",
-    "Accept-Language": "cs-CZ,cs;q=0.9",
-    "Referer": "https://www.sreality.cz/"
+    "Accept-Language": "cs-CZ,cs;q=0.9"
 }
 
-KATEGORIE_SREALITY = {
-    1: ("Byt", "byt"),
-    2: ("Dům", "dum"),
-    3: ("Pozemek", "pozemek"),
-    4: ("Komerční", "komercni"),
-    5: ("Ostatní/Garáž", "ostatni")
-}
+SREALITY_SEKCE = [
+    ("Byt", "byty", "byt"),
+    ("Dům", "domy", "dum"),
+    ("Pozemek", "pozemky", "pozemek"),
+    ("Komerční", "komercni-nemovitosti", "komercni"),
+    ("Ostatní", "ostatni-reality", "ostatni")
+]
 
 BAZOS_SEKCE = [
     ("Byt", "https://reality.bazos.cz/prodam/byt/"),
@@ -33,14 +34,6 @@ BAZOS_SEKCE = [
     ("Pozemek", "https://reality.bazos.cz/prodam/pozemek/"),
     ("Garáž", "https://reality.bazos.cz/prodam/garaz/"),
     ("Chata", "https://reality.bazos.cz/prodam/chata/")
-]
-
-CESKEREALITY_SEKCE = [
-    ("Byt", "https://www.ceskereality.cz/prodej/byty/celakovice/"),
-    ("Dům", "https://www.ceskereality.cz/prodej/rodinne-domy/celakovice/"),
-    ("Pozemek", "https://www.ceskereality.cz/prodej/pozemky/celakovice/"),
-    ("Chata", "https://www.ceskereality.cz/prodej/chaty-chalupy/celakovice/"),
-    ("Komerční", "https://www.ceskereality.cz/prodej/komercni-prostory/celakovice/")
 ]
 
 
@@ -59,14 +52,21 @@ def uloz_db(db):
         json.dump(db, f, ensure_ascii=False, indent=2)
 
 
-def vytvor_fingerprint(cena_str, nazev):
+def vytvor_fingerprint(kategorie, cena_str, nazev):
+    """Vytvoří unikátní klíč podle kategorie, metrů čtverečních a ceny pro sloučení duplicit."""
     cista_cena = re.sub(r"\D", "", str(cena_str))
     if not cista_cena or cista_cena == "0":
         cista_cena = "info"
+    else:
+        # Zaokrouhlíme cenu na statisíce pro lepší párování mezi portály
+        try:
+            cista_cena = str(round(int(cista_cena) / 100000) * 100000)
+        except Exception:
+            pass
+
     metry_match = re.search(r"(\d+)\s*m[2²]", nazev.lower())
-    metry = metry_match.group(1) if metry_match else ""
-    cisty_nazev = re.sub(r"[^\w]", "", nazev.lower())[:12]
-    return f"{cista_cena}_{metry}_{cisty_nazev}"
+    metry = metry_match.group(1) if metry_match else "x"
+    return f"{kategorie}_{metry}_{cista_cena}"
 
 
 def posli_notifikaci(titulek, cena_text, url, zdroj):
@@ -88,47 +88,70 @@ def posli_notifikaci(titulek, cena_text, url, zdroj):
         print(f"[CHYBA NOTIFIKACE] {e}")
 
 
-def stahni_sreality_json(api_url):
-    try:
-        r = requests.get(api_url, headers=HEADERS, timeout=7)
-        if r.status_code == 200 and "_embedded" in r.text:
-            return r.json()
-    except Exception as e:
-        print(f"Prime spojeni na Sreality selhalo ({e}), zkousim premosteni...")
+def zapis_polozku(db, existujici_fp, nalezene_ids, uid, kat_nazev, titulek, cena_text, url, zdroj, dnes, prvni_beh):
+    fp = vytvor_fingerprint(kat_nazev, cena_text, titulek)
 
-    try:
-        proxy_url = f"https://api.allorigins.win/raw?url={quote(api_url, safe='')}"
-        r = requests.get(proxy_url, timeout=12)
-        if r.status_code == 200 and "_embedded" in r.text:
-            return r.json()
-    except Exception as e:
-        print(f"Zalozni spojeni na Sreality selhalo: {e}")
+    # Kontrola duplicity na jiném portálu
+    if fp in existujici_fp and existujici_fp[fp] != uid and "_x_" not in fp:
+        puvodni_uid = existujici_fp[fp]
+        nalezene_ids.add(puvodni_uid)
+        if puvodni_uid in db:
+            db[puvodni_uid]["status"] = "✅ Aktivní"
+            if zdroj not in db[puvodni_uid]["source"]:
+                db[puvodni_uid]["source"] += f" + {zdroj}"
+        return
 
-    return None
+    nalezene_ids.add(uid)
+    if uid not in db:
+        db[uid] = {
+            "title": f"[{kat_nazev}] {titulek}",
+            "price": cena_text,
+            "url": url,
+            "source": zdroj,
+            "status": "🔥 Novinka",
+            "first_seen": dnes,
+            "fingerprint": fp
+        }
+        existujici_fp[fp] = uid
+        if not prvni_beh:
+            posli_notifikaci(f"[{kat_nazev}] {titulek}", cena_text, url, zdroj)
+    else:
+        # Kontrola, zda se nezměnila cena
+        stara_cena = db[uid].get("price", "")
+        if stara_cena != cena_text and cena_text not in ["Info v RK", "Neuvedena"]:
+            db[uid]["price"] = f"{cena_text} (původně {stara_cena})"
+            db[uid]["status"] = "📉 Změna ceny"
+            if not prvni_beh:
+                posli_notifikaci(f"ZMĚNA CENY: {titulek}", db[uid]["price"], url, zdroj)
+        else:
+            if db[uid]["status"] == "❌ Staženo z inzerce":
+                db[uid]["status"] = "✅ Aktivní"
+            elif db[uid]["status"] != "🔥 Novinka":
+                db[uid]["status"] = "✅ Aktivní"
 
 
 def generuj_readme(db, statistika):
     dnes = datetime.now().strftime("%Y-%m-%d %H:%M")
-    
-    obsah = f"# 🏠 Realitní Radar Čelákovice\n\n"
+
+    obsah = "# 🏠 Realitní Radar Čelákovice\n\n"
     obsah += f"Poslední aktualizace: **{dnes}**  \n"
-    obsah += f"Stav posledního skenu: `{statistika}`\n\n"
+    obsah += f"Stav posledního skenu (nalezeno aktivních): `{statistika}`\n\n"
     obsah += "| Status | Název / Odkaz | Cena | Zdroj | První výskyt |\n"
     obsah += "| :--- | :--- | :--- | :--- | :--- |\n"
 
-    seazene_polozky = sorted(
-        db.values(), 
-        key=lambda x: (0 if x['status'] in ["🔥 Novinka", "✅ Aktivní"] else 1, x['first_seen']), 
-        reverse=True
+    razeni_statusu = {"🔥 Novinka": 0, "📉 Změna ceny": 1, "✅ Aktivní": 2, "❌ Staženo z inzerce": 3}
+    serazene_polozky = sorted(
+        db.values(),
+        key=lambda x: (razeni_statusu.get(x["status"], 4), x["first_seen"])
     )
 
-    for item in seazene_polozky:
-        status = item['status']
-        nazev = item['title'].replace("|", "-")
-        url = item['url']
-        cena = item['price']
-        zdroj = item['source']
-        datum = item['first_seen']
+    for item in serazene_polozky:
+        status = item["status"]
+        nazev = item["title"].replace("|", "-")
+        url = item["url"]
+        cena = item["price"]
+        zdroj = item["source"]
+        datum = item["first_seen"]
 
         link_markdown = f"[{nazev}]({url})"
         obsah += f"| **{status}** | {link_markdown} | {cena} | {zdroj} | {datum} |\n"
@@ -142,115 +165,133 @@ def main():
     prvni_beh = len(db) == 0
     dnes = datetime.now().strftime("%Y-%m-%d")
     nalezene_ids = set()
-    existujici_fingerprints = {item.get("fingerprint"): uid for uid, item in db.items() if "fingerprint" in item}
+    existujici_fp = {item.get("fingerprint"): uid for uid, item in db.items() if "fingerprint" in item}
 
-    pocty = {"Sreality": 0, "Ceskereality": 0, "Bazos": 0}
+    # Na začátku přepneme staré "Novinky" z minulých dnů na "Aktivní"
+    for uid, item in db.items():
+        if item.get("status") == "🔥 Novinka" and item.get("first_seen") != dnes:
+            item["status"] = "✅ Aktivní"
 
-    # 1. SREALITY.CZ
-    timestamp = int(time.time() * 1000)
-    for cat_id, (cat_nazev, cat_seo) in KATEGORIE_SREALITY.items():
-        for page in [1, 2]:
-            api_url = (
-                f"https://www.sreality.cz/api/cs/v2/estates?"
-                f"category_main_cb={cat_id}&category_type_cb=1&"
-                f"locality_district_id=57&per_page=60&page={page}&tms={timestamp}"
-            )
-            data = stahni_sreality_json(api_url)
-            if not data:
-                break
+    pocty = {"Sreality": 0, "iDNES": 0, "Bazos": 0}
 
-            estates = data.get("_embedded", {}).get("estates", [])
-            if not estates:
-                break
+    # =========================================================================
+    # 1. SKUTEČNÝ PROHLÍŽEČ CHROMIUM (Sreality.cz + Reality.iDNES.cz)
+    # =========================================================================
+    print("Spouštím prohlížeč Chromium...")
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        context = browser.new_context(
+            user_agent=HEADERS["User-Agent"],
+            locale="cs-CZ",
+            viewport={"width": 1366, "height": 768}
+        )
+        page = context.new_page()
 
-            for item in estates:
-                lokalita = item.get("locality", "")
-                nazev = item.get("name", cat_nazev)
-                seo_loc = item.get("seo", {}).get("locality", "celakovice")
+        # Odposlech interních JSON dat přímo z prohlížeče Srealit
+        zachycene_sreality = []
 
-                spojeny_text = f"{lokalita} {nazev} {seo_loc}".lower()
-                if "čelákovic" not in spojeny_text and "celakovic" not in spojeny_text:
-                    continue
+        def zachyt_odpoved(response):
+            if "/api/cs/v2/estates" in response.url and response.status == 200:
+                try:
+                    data = response.json()
+                    estates = data.get("_embedded", {}).get("estates", [])
+                    zachycene_sreality.extend(estates)
+                except Exception:
+                    pass
 
-                pocty["Sreality"] += 1
-                uid = f"sr_{item.get('hash_id')}"
-                cena = item.get("price", 0)
-                cena_format = f"{cena:,} Kč".replace(",", " ") if cena > 0 else "Info v RK"
-                web_url = f"https://www.sreality.cz/detail/prodej/{cat_seo}/detail/{seo_loc}/{item.get('hash_id')}"
-                
-                fp = vytvor_fingerprint(cena, nazev)
-                if fp in existujici_fingerprints and existujici_fingerprints[fp] != uid:
-                    nalezene_ids.add(existujici_fingerprints[fp])
-                    continue
+        page.on("response", zachyt_odpoved)
 
-                nalezene_ids.add(uid)
-                if uid not in db:
-                    db[uid] = {
-                        "title": f"[{cat_nazev}] {nazev} ({lokalita})",
-                        "price": cena_format,
-                        "url": web_url,
-                        "source": "Sreality.cz",
-                        "status": "🔥 Novinka",
-                        "first_seen": dnes,
-                        "fingerprint": fp
-                    }
-                    existujici_fingerprints[fp] = uid
-                    if not prvni_beh:
-                        posli_notifikaci(f"[{cat_nazev}] {nazev}", cena_format, web_url, "Sreality.cz")
-                else:
-                    db[uid]["status"] = "✅ Aktivní"
+        # A) SREALITY.CZ
+        for kat_nazev, url_slug, seo_kat in SREALITY_SEKCE:
+            zachycene_sreality.clear()
+            cilova_url = f"https://www.sreality.cz/hledani/prodej/{url_slug}/celakovice"
+            try:
+                page.goto(cilova_url, wait_until="networkidle", timeout=20000)
+                page.wait_for_timeout(1500)
 
-    # 2. ČESKÉREALITY.CZ
-    for kat_nazev, cr_url in CESKEREALITY_SEKCE:
+                # 1. Zpracování zachycených API dat z prohlížeče
+                for item in zachycene_sreality:
+                    lokalita = item.get("locality", "")
+                    nazev = item.get("name", kat_nazev)
+                    seo_loc = item.get("seo", {}).get("locality", "celakovice")
+
+                    if "čelákovic" not in f"{lokalita} {nazev} {seo_loc}".lower() and "celakovic" not in seo_loc.lower():
+                        continue
+
+                    hash_id = item.get("hash_id")
+                    if not hash_id:
+                        continue
+
+                    uid = f"sr_{hash_id}"
+                    cena = item.get("price", 0)
+                    cena_format = f"{cena:,} Kč".replace(",", " ") if cena > 0 else "Info v RK"
+                    web_url = f"https://www.sreality.cz/detail/prodej/{seo_kat}/detail/{seo_loc}/{hash_id}"
+
+                    pocty["Sreality"] += 1
+                    zapis_polozku(db, existujici_fp, nalezene_ids, uid, kat_nazev, f"{nazev} ({lokalita})", cena_format, web_url, "Sreality.cz", dnes, prvni_beh)
+
+                # 2. Záložní čtení přímo z obrazovky (DOM), pokud Sreality použily SSR
+                if len(zachycene_sreality) == 0:
+                    html = page.content()
+                    soup = BeautifulSoup(html, "html.parser")
+                    for a_tag in soup.find_all("a", href=re.compile(r"/detail/prodej/")):
+                        href = a_tag["href"]
+                        match_id = re.search(r"/(\d+)$", href)
+                        if not match_id:
+                            continue
+                        hash_id = match_id.group(1)
+                        uid = f"sr_{hash_id}"
+                        plna_url = href if href.startswith("http") else f"https://www.sreality.cz{href}"
+                        text_inzeratu = a_tag.get_text(" ", strip=True)
+                        if "čelákovic" not in text_inzeratu.lower() and "celakovic" not in href.lower():
+                            continue
+
+                        cena_match = re.search(r"(\d[\d\s]{4,12})\s*Kč", text_inzeratu)
+                        cena_format = f"{cena_match.group(1).strip()} Kč" if cena_match else "V detailu"
+                        titulek = text_inzeratu.split("Kč")[0].strip()[:80]
+
+                        pocty["Sreality"] += 1
+                        zapis_polozku(db, existujici_fp, nalezene_ids, uid, kat_nazev, titulek, cena_format, plna_url, "Sreality.cz", dnes, prvni_beh)
+
+            except Exception as e:
+                print(f"[CHYBA SREALITY {kat_nazev}] {e}")
+
+        # B) REALITY.IDNES.CZ (Všechny prodeje v Čelákovicích)
         try:
-            r = requests.get(cr_url, headers=HEADERS, timeout=10)
-            if r.status_code != 200:
-                continue
-            soup = BeautifulSoup(r.text, "html.parser")
-            for article in soup.find_all("article"):
-                a_tag = article.find("a", href=True)
-                if not a_tag:
+            idnes_url = "https://reality.idnes.cz/s/prodej/celakovice/"
+            page.goto(idnes_url, wait_until="domcontentloaded", timeout=20000)
+            page.wait_for_timeout(1500)
+            soup = BeautifulSoup(page.content(), "html.parser")
+
+            for item in soup.select("div.c-products__item"):
+                a_tag = item.select_one("a.c-products__link")
+                if not a_tag or not a_tag.get("href"):
                     continue
-                href = a_tag["href"]
-                plna_url = href if href.startswith("http") else f"https://www.ceskereality.cz{href}"
-                
-                nadpis_el = article.find(["h2", "h3"])
-                titulek = nadpis_el.text.strip() if nadpis_el else a_tag.text.strip()
-                if not titulek or "čelákovic" not in titulek.lower():
-                    continue
+                plna_url = a_tag["href"]
+                titulek_el = item.select_one("h2.c-products__title")
+                info_el = item.select_one("p.c-products__info")
+                cena_el = item.select_one("p.c-products__price")
 
-                cena_el = article.find(class_=re.compile(r"price|cena", re.I))
-                cena_text = cena_el.text.strip() if cena_el else "V detailu"
-
-                match_id = re.search(r"-(\d+)\.html", plna_url)
-                uid = f"cr_{match_id.group(1)}" if match_id else f"cr_{href[-20:]}"
-
-                pocty["Ceskereality"] += 1
-                fp = vytvor_fingerprint(cena_text, titulek)
-                if fp in existujici_fingerprints and existujici_fingerprints[fp] != uid:
-                    nalezene_ids.add(existujici_fingerprints[fp])
+                titulek = titulek_el.get_text(strip=True) if titulek_el else "Nemovitost"
+                lokalita = info_el.get_text(strip=True) if info_el else ""
+                if "čelákovic" not in f"{titulek} {lokalita}".lower():
                     continue
 
-                nalezene_ids.add(uid)
-                if uid not in db:
-                    db[uid] = {
-                        "title": f"[{kat_nazev}] {titulek}",
-                        "price": cena_text,
-                        "url": plna_url,
-                        "source": "ČeskéReality.cz",
-                        "status": "🔥 Novinka",
-                        "first_seen": dnes,
-                        "fingerprint": fp
-                    }
-                    existujici_fingerprints[fp] = uid
-                    if not prvni_beh:
-                        posli_notifikaci(f"[{kat_nazev}] {titulek}", cena_text, plna_url, "ČeskéReality.cz")
-                else:
-                    db[uid]["status"] = "✅ Aktivní"
+                cena_text = cena_el.get_text(strip=True) if cena_el else "Info v RK"
+                match_id = re.search(r"/([a-f0-9]{24})/?$", plna_url)
+                uid = f"idnes_{match_id.group(1)}" if match_id else f"idnes_{plna_url[-20:]}"
+
+                kat = "Byt" if "byt" in titulek.lower() else ("Dům" if "dům" in titulek.lower() or "dom" in titulek.lower() else "Pozemek/Jiné")
+                pocty["iDNES"] += 1
+                zapis_polozku(db, existujici_fp, nalezene_ids, uid, kat, f"{titulek} ({lokalita})", cena_text, plna_url, "Reality.iDNES", dnes, prvni_beh)
         except Exception as e:
-            print(f"[CHYBA ČESKÉREALITY] {e}")
+            print(f"[CHYBA IDNES] {e}")
 
-    # 3. BAZOŠ.CZ
+        browser.close()
+
+    # =========================================================================
+    # 2. BAZOŠ.CZ (Rychlé načtení přes HTML)
+    # =========================================================================
     for kat_nazev, base_url in BAZOS_SEKCE:
         url = f"{base_url}?hledat=&hlokalita={PSC}&humkreis=2"
         try:
@@ -275,44 +316,26 @@ def main():
                 pocty["Bazos"] += 1
                 match_id = re.search(r"/inzerat/(\d+)/", rel_link)
                 uid = f"bz_{match_id.group(1)}" if match_id else f"bz_{rel_link}"
-                
+
                 cena_el = inz.find("div", class_="inzeratycena")
                 cena_text = cena_el.text.strip() if cena_el else "Neuvedena"
 
-                fp = vytvor_fingerprint(cena_text, titulek)
-                if fp in existujici_fingerprints and existujici_fingerprints[fp] != uid:
-                    nalezene_ids.add(existujici_fingerprints[fp])
-                    continue
-
-                nalezene_ids.add(uid)
-                if uid not in db:
-                    db[uid] = {
-                        "title": f"[{kat_nazev}] {titulek}",
-                        "price": cena_text,
-                        "url": plna_url,
-                        "source": "Bazoš.cz",
-                        "status": "🔥 Novinka",
-                        "first_seen": dnes,
-                        "fingerprint": fp
-                    }
-                    existujici_fingerprints[fp] = uid
-                    if not prvni_beh:
-                        posli_notifikaci(f"[{kat_nazev}] {titulek}", cena_text, plna_url, "Bazoš.cz")
-                else:
-                    db[uid]["status"] = "✅ Aktivní"
+                zapis_polozku(db, existujici_fp, nalezene_ids, uid, kat_nazev, titulek, cena_text, plna_url, "Bazoš.cz", dnes, prvni_beh)
         except Exception as e:
             print(f"[CHYBA BAZOŠ] {e}")
 
-    # 4. KONTROLA STAŽENÝCH INZERÁTŮ
+    # =========================================================================
+    # 3. KONTROLA STAŽENÝCH INZERÁTŮ
+    # =========================================================================
     for uid, item in db.items():
         zdroj = item.get("source", "")
         if uid not in nalezene_ids:
-            if (zdroj == "Sreality.cz" and pocty["Sreality"] > 0) or \
-               (zdroj == "ČeskéReality.cz" and pocty["Ceskereality"] > 0) or \
-               (zdroj == "Bazoš.cz" and pocty["Bazos"] > 0):
+            if ("Sreality" in zdroj and pocty["Sreality"] > 0) or \
+               ("iDNES" in zdroj and pocty["iDNES"] > 0) or \
+               ("Bazoš" in zdroj and pocty["Bazos"] > 0):
                 item["status"] = "❌ Staženo z inzerce"
 
-    statistika = f"Sreality: {pocty['Sreality']} | ČeskéReality: {pocty['Ceskereality']} | Bazoš: {pocty['Bazos']}"
+    statistika = f"Sreality: {pocty['Sreality']} | Reality.iDNES: {pocty['iDNES']} | Bazoš: {pocty['Bazos']}"
     print(f"HOTOVO -> {statistika}")
 
     uloz_db(db)
