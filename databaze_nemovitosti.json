@@ -112,10 +112,10 @@
   },
   "idnes_6ad1cb3e9b46a3cb7a085318": {
     "title": "[Pozemek/Jiné] prodejstavebního pozemku 767 m² (Druhá, Čelákovice - Záluží)",
-    "price": "8 437 000 Kč(11 000 Kč/m²\n\t\t\t)",
+    "price": "8 437 000 Kč (11 000 Kč/m²\n\t\t\t) (původně 8 437 000 Kč(11 000 Kč/m²\n\t\t\t))",
     "url": "https://reality.idnes.cz/detail/prodej/pozemek/celakovice-druha/6ad1cb3e9b46a3cb7a085318/",
     "source": "Reality.iDNES",
-    "status": "🔥 Novinka",
+    "status": "📉 Změna ceny",
     "first_seen": "2026-10-20",
     "fingerprint": "Pozemek/Jiné_767_843700000000"
   },
@@ -175,10 +175,10 @@
   },
   "idnes_695c0ef0a0248712e70a3b9b": {
     "title": "[Pozemek/Jiné] prodejstavebního pozemku 950 m² (Čelákovice)",
-    "price": "8 990 000 Kč(9 463 Kč/m²\n\t\t\t)",
+    "price": "8 990 000 Kč (9 463 Kč/m²\n\t\t\t) (původně 8 990 000 Kč(9 463 Kč/m²\n\t\t\t))",
     "url": "https://reality.idnes.cz/detail/prodej/pozemek/celakovice/695c0ef0a0248712e70a3b9b/",
     "source": "Reality.iDNES",
-    "status": "🔥 Novinka",
+    "status": "📉 Změna ceny",
     "first_seen": "2026-10-20",
     "fingerprint": "Pozemek/Jiné_950_89900000000"
   },
@@ -229,10 +229,10 @@
   },
   "idnes_6ab376b2dac44043240eaa2c": {
     "title": "[Pozemek/Jiné] prodejstavebního pozemku 701 m² (Čtvrtá, Čelákovice)",
-    "price": "7 360 500 Kč(10 500 Kč/m²\n\t\t\t)",
+    "price": "7 360 500 Kč (10 500 Kč/m²\n\t\t\t) (původně 7 360 500 Kč(10 500 Kč/m²\n\t\t\t))",
     "url": "https://reality.idnes.cz/detail/prodej/pozemek/celakovice-ctvrta/6ab376b2dac44043240eaa2c/",
     "source": "Reality.iDNES",
-    "status": "🔥 Novinka",
+    "status": "📉 Změna ceny",
     "first_seen": "2026-10-20",
     "fingerprint": "Pozemek/Jiné_701_736050000000"
   },
