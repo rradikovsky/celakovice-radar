@@ -2,7 +2,7 @@ name: Realitni Radar Celakovice
 
 on:
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '*/20 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -11,6 +11,7 @@ permissions:
 jobs:
   kontrola:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Stazeni repozitare
         uses: actions/checkout@v4
@@ -20,8 +21,10 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Instalace knihoven
-        run: pip install requests beautifulsoup4
+      - name: Instalace knihoven a prohlizece Chromium
+        run: |
+          pip install playwright requests beautifulsoup4
+          playwright install --with-deps chromium
 
       - name: Spusteni radaru
         run: python hlidac_celakovice.py
@@ -31,5 +34,5 @@ jobs:
           git config --global user.name "Realitni Radar"
           git config --global user.email "radar@celakovice.local"
           git add databaze_nemovitosti.json README.md || true
-          git diff --staged --quiet || git commit -m "Aktualizace radaru a prehledu nemovitosti"
+          git diff --staged --quiet || git commit -m "Aktualizace radaru (Playwright)"
           git push
