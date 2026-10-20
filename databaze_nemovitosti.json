@@ -250,8 +250,17 @@
     "price": "5 490 000 Kč",
     "url": "https://reality.idnes.cz/detail/prodej/byt/celakovice-sokolovska/6a959bcc97e82c34d30991e1/",
     "source": "Reality.iDNES",
-    "status": "🔥 Novinka",
+    "status": "❌ Staženo z inzerce",
     "first_seen": "2026-10-20",
     "fingerprint": "Byt_44_5500000"
+  },
+  "idnes_6ad77158230ff360a4001394": {
+    "title": "[Dům] prodej domu 150 m² (V Prokopě, Čelákovice)",
+    "price": "10 500 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice-v-prokope/6ad77158230ff360a4001394/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Dům_150_10500000"
   }
 }
