@@ -5,6 +5,7 @@ import time
 import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from playwright.sync_api import sync_playwright
 
 # ==========================================
@@ -14,6 +15,7 @@ PSC = "25088"
 NTFY_TOPIC = "celakovice_radar_7741"  # Tvůj ntfy kanál z mobilu
 DB_FILE = "databaze_nemovitosti.json"
 README_FILE = "README.md"
+CZ_TZ = ZoneInfo("Europe/Prague")
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36",
@@ -53,12 +55,10 @@ def uloz_db(db):
 
 
 def vytvor_fingerprint(kategorie, cena_str, nazev):
-    """Vytvoří unikátní klíč podle kategorie, metrů čtverečních a ceny pro sloučení duplicit."""
     cista_cena = re.sub(r"\D", "", str(cena_str))
     if not cista_cena or cista_cena == "0":
         cista_cena = "info"
     else:
-        # Zaokrouhlíme cenu na statisíce pro lepší párování mezi portály
         try:
             cista_cena = str(round(int(cista_cena) / 100000) * 100000)
         except Exception:
@@ -89,9 +89,10 @@ def posli_notifikaci(titulek, cena_text, url, zdroj):
 
 
 def zapis_polozku(db, existujici_fp, nalezene_ids, uid, kat_nazev, titulek, cena_text, url, zdroj, dnes, prvni_beh):
+    # Oprava slepených slov z iDNESu (např. "prodejdomu" -> "prodej domu")
+    titulek = re.sub(r"^(prodej)(byt[uů]|dom[uů]|pozemk[uů]|chat[y]|garáž[eí])", r"\1 \2", titulek, flags=re.I)
     fp = vytvor_fingerprint(kat_nazev, cena_text, titulek)
 
-    # Kontrola duplicity na jiném portálu
     if fp in existujici_fp and existujici_fp[fp] != uid and "_x_" not in fp:
         puvodni_uid = existujici_fp[fp]
         nalezene_ids.add(puvodni_uid)
@@ -116,13 +117,13 @@ def zapis_polozku(db, existujici_fp, nalezene_ids, uid, kat_nazev, titulek, cena
         if not prvni_beh:
             posli_notifikaci(f"[{kat_nazev}] {titulek}", cena_text, url, zdroj)
     else:
-        # Kontrola, zda se nezměnila cena
         stara_cena = db[uid].get("price", "")
-        if stara_cena != cena_text and cena_text not in ["Info v RK", "Neuvedena"]:
-            db[uid]["price"] = f"{cena_text} (původně {stara_cena})"
-            db[uid]["status"] = "📉 Změna ceny"
-            if not prvni_beh:
-                posli_notifikaci(f"ZMĚNA CENY: {titulek}", db[uid]["price"], url, zdroj)
+        if stara_cena != cena_text and cena_text not in ["Info v RK", "Neuvedena", "V detailu"]:
+            if "původně" not in stara_cena:
+                db[uid]["price"] = f"{cena_text} (původně {stara_cena})"
+                db[uid]["status"] = "📉 Změna ceny"
+                if not prvni_beh:
+                    posli_notifikaci(f"ZMĚNA CENY: {titulek}", db[uid]["price"], url, zdroj)
         else:
             if db[uid]["status"] == "❌ Staženo z inzerce":
                 db[uid]["status"] = "✅ Aktivní"
@@ -131,10 +132,10 @@ def zapis_polozku(db, existujici_fp, nalezene_ids, uid, kat_nazev, titulek, cena
 
 
 def generuj_readme(db, statistika):
-    dnes = datetime.now().strftime("%Y-%m-%d %H:%M")
+    dnes_cas = datetime.now(CZ_TZ).strftime("%d.%m.%Y %H:%M:%S (ČR)")
 
     obsah = "# 🏠 Realitní Radar Čelákovice\n\n"
-    obsah += f"Poslední aktualizace: **{dnes}**  \n"
+    obsah += f"Poslední aktualizace: **{dnes_cas}**  \n"
     obsah += f"Stav posledního skenu (nalezeno aktivních): `{statistika}`\n\n"
     obsah += "| Status | Název / Odkaz | Cena | Zdroj | První výskyt |\n"
     obsah += "| :--- | :--- | :--- | :--- | :--- |\n"
@@ -160,42 +161,53 @@ def generuj_readme(db, statistika):
         f.write(obsah)
 
 
+def odklikni_seznam_cookies(page):
+    """Pokud Seznam zobrazí CMP cookie stěnu, automaticky ji odklikne."""
+    try:
+        if "cmp.seznam.cz" in page.url or page.locator("button:has-text('Souhlasím')").count() > 0:
+            for text_tlacitka in ["Souhlasím", "Přijmout vše", "Souhlasím se vším"]:
+                btn = page.locator(f"button:has-text('{text_tlacitka}')")
+                if btn.count() > 0:
+                    btn.first.click(timeout=3000)
+                    page.wait_for_timeout(1500)
+                    break
+    except Exception:
+        pass
+
+
 def main():
     db = nacti_db()
     prvni_beh = len(db) == 0
-    dnes = datetime.now().strftime("%Y-%m-%d")
+    dnes = datetime.now(CZ_TZ).strftime("%Y-%m-%d")
     nalezene_ids = set()
     existujici_fp = {item.get("fingerprint"): uid for uid, item in db.items() if "fingerprint" in item}
 
-    # Na začátku přepneme staré "Novinky" z minulých dnů na "Aktivní"
     for uid, item in db.items():
         if item.get("status") == "🔥 Novinka" and item.get("first_seen") != dnes:
             item["status"] = "✅ Aktivní"
 
     pocty = {"Sreality": 0, "iDNES": 0, "Bazos": 0}
 
-    # =========================================================================
-    # 1. SKUTEČNÝ PROHLÍŽEČ CHROMIUM (Sreality.cz + Reality.iDNES.cz)
-    # =========================================================================
     print("Spouštím prohlížeč Chromium...")
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(headless=True, args=["--disable-blink-features=AutomationControlled"])
         context = browser.new_context(
             user_agent=HEADERS["User-Agent"],
             locale="cs-CZ",
-            viewport={"width": 1366, "height": 768}
+            timezone_id="Europe/Prague",
+            viewport={"width": 1366, "height": 900}
         )
         page = context.new_page()
 
-        # Odposlech interních JSON dat přímo z prohlížeče Srealit
         zachycene_sreality = []
 
         def zachyt_odpoved(response):
-            if "/api/cs/v2/estates" in response.url and response.status == 200:
+            if "estates" in response.url and response.status == 200:
                 try:
                     data = response.json()
                     estates = data.get("_embedded", {}).get("estates", [])
-                    zachycene_sreality.extend(estates)
+                    if estates:
+                        zachycene_sreality.extend(estates)
                 except Exception:
                     pass
 
@@ -204,12 +216,15 @@ def main():
         # A) SREALITY.CZ
         for kat_nazev, url_slug, seo_kat in SREALITY_SEKCE:
             zachycene_sreality.clear()
-            cilova_url = f"https://www.sreality.cz/hledani/prodej/{url_slug}/celakovice"
+            # Použijeme přímý vyhledávací dotaz region=Čelákovice
+            cilova_url = f"https://www.sreality.cz/hledani/prodej/{url_slug}?region=%C4%8Cel%C3%A1kovice&region-id=3468&region-typ=municipality"
             try:
-                page.goto(cilova_url, wait_until="networkidle", timeout=20000)
-                page.wait_for_timeout(1500)
+                page.goto(cilova_url, wait_until="domcontentloaded", timeout=15000)
+                page.wait_for_timeout(2000)
+                odklikni_seznam_cookies(page)
+                page.wait_for_timeout(2500)
 
-                # 1. Zpracování zachycených API dat z prohlížeče
+                # 1. Pokud jsme zachytili JSON z API
                 for item in zachycene_sreality:
                     lokalita = item.get("locality", "")
                     nazev = item.get("name", kat_nazev)
@@ -230,36 +245,40 @@ def main():
                     pocty["Sreality"] += 1
                     zapis_polozku(db, existujici_fp, nalezene_ids, uid, kat_nazev, f"{nazev} ({lokalita})", cena_format, web_url, "Sreality.cz", dnes, prvni_beh)
 
-                # 2. Záložní čtení přímo z obrazovky (DOM), pokud Sreality použily SSR
-                if len(zachycene_sreality) == 0:
-                    html = page.content()
-                    soup = BeautifulSoup(html, "html.parser")
-                    for a_tag in soup.find_all("a", href=re.compile(r"/detail/prodej/")):
-                        href = a_tag["href"]
-                        match_id = re.search(r"/(\d+)$", href)
-                        if not match_id:
-                            continue
-                        hash_id = match_id.group(1)
-                        uid = f"sr_{hash_id}"
-                        plna_url = href if href.startswith("http") else f"https://www.sreality.cz{href}"
-                        text_inzeratu = a_tag.get_text(" ", strip=True)
-                        if "čelákovic" not in text_inzeratu.lower() and "celakovic" not in href.lower():
-                            continue
+                # 2. Čtení přímo z vykreslené stránky Srealit (Nový Next.js design Srealit)
+                soup = BeautifulSoup(page.content(), "html.parser")
+                for a_tag in soup.find_all("a", href=re.compile(r"/detail/prodej/")):
+                    href = a_tag["href"].split("?")[0]
+                    match_id = re.search(r"/(\d+)$", href)
+                    if not match_id:
+                        continue
+                    hash_id = match_id.group(1)
+                    uid = f"sr_{hash_id}"
+                    if uid in nalezene_ids:
+                        continue
 
-                        cena_match = re.search(r"(\d[\d\s]{4,12})\s*Kč", text_inzeratu)
-                        cena_format = f"{cena_match.group(1).strip()} Kč" if cena_match else "V detailu"
-                        titulek = text_inzeratu.split("Kč")[0].strip()[:80]
+                    plna_url = href if href.startswith("http") else f"https://www.sreality.cz{href}"
+                    # Získáme text z nadřazeného kontejneru karty inzerátu
+                    karta = a_tag.find_parent(["li", "div", "article"])
+                    text_karty = karta.get_text(" ", strip=True) if karta else a_tag.get_text(" ", strip=True)
 
-                        pocty["Sreality"] += 1
-                        zapis_polozku(db, existujici_fp, nalezene_ids, uid, kat_nazev, titulek, cena_format, plna_url, "Sreality.cz", dnes, prvni_beh)
+                    if "čelákovic" not in text_karty.lower() and "celakovic" not in href.lower():
+                        continue
+
+                    cena_match = re.search(r"(\d{1,3}(?:[\s\xa0]\d{3})+)\s*Kč", text_karty)
+                    cena_format = f"{cena_match.group(1).replace(chr(160), ' ').strip()} Kč" if cena_match else "V detailu"
+                    titulek = text_karty.split("Kč")[0].strip()[:90]
+
+                    pocty["Sreality"] += 1
+                    zapis_polozku(db, existujici_fp, nalezene_ids, uid, kat_nazev, titulek, cena_format, plna_url, "Sreality.cz", dnes, prvni_beh)
 
             except Exception as e:
                 print(f"[CHYBA SREALITY {kat_nazev}] {e}")
 
-        # B) REALITY.IDNES.CZ (Všechny prodeje v Čelákovicích)
+        # B) REALITY.IDNES.CZ
         try:
             idnes_url = "https://reality.idnes.cz/s/prodej/celakovice/"
-            page.goto(idnes_url, wait_until="domcontentloaded", timeout=20000)
+            page.goto(idnes_url, wait_until="domcontentloaded", timeout=15000)
             page.wait_for_timeout(1500)
             soup = BeautifulSoup(page.content(), "html.parser")
 
@@ -272,16 +291,16 @@ def main():
                 info_el = item.select_one("p.c-products__info")
                 cena_el = item.select_one("p.c-products__price")
 
-                titulek = titulek_el.get_text(strip=True) if titulek_el else "Nemovitost"
-                lokalita = info_el.get_text(strip=True) if info_el else ""
+                titulek = titulek_el.get_text(" ", strip=True) if titulek_el else "Nemovitost"
+                lokalita = info_el.get_text(" ", strip=True) if info_el else ""
                 if "čelákovic" not in f"{titulek} {lokalita}".lower():
                     continue
 
-                cena_text = cena_el.get_text(strip=True) if cena_el else "Info v RK"
+                cena_text = cena_el.get_text(" ", strip=True) if cena_el else "Info v RK"
                 match_id = re.search(r"/([a-f0-9]{24})/?$", plna_url)
                 uid = f"idnes_{match_id.group(1)}" if match_id else f"idnes_{plna_url[-20:]}"
 
-                kat = "Byt" if "byt" in titulek.lower() else ("Dům" if "dům" in titulek.lower() or "dom" in titulek.lower() else "Pozemek/Jiné")
+                kat = "Byt" if "byt" in titulek.lower() else ("Dům" if "dům" in titulek.lower() or "dom" in titulek.lower() else "Pozemek")
                 pocty["iDNES"] += 1
                 zapis_polozku(db, existujici_fp, nalezene_ids, uid, kat, f"{titulek} ({lokalita})", cena_text, plna_url, "Reality.iDNES", dnes, prvni_beh)
         except Exception as e:
@@ -289,9 +308,7 @@ def main():
 
         browser.close()
 
-    # =========================================================================
-    # 2. BAZOŠ.CZ (Rychlé načtení přes HTML)
-    # =========================================================================
+    # C) BAZOŠ.CZ
     for kat_nazev, base_url in BAZOS_SEKCE:
         url = f"{base_url}?hledat=&hlokalita={PSC}&humkreis=2"
         try:
@@ -324,9 +341,7 @@ def main():
         except Exception as e:
             print(f"[CHYBA BAZOŠ] {e}")
 
-    # =========================================================================
-    # 3. KONTROLA STAŽENÝCH INZERÁTŮ
-    # =========================================================================
+    # KONTROLA STAŽENÝCH INZERÁTŮ
     for uid, item in db.items():
         zdroj = item.get("source", "")
         if uid not in nalezene_ids:
