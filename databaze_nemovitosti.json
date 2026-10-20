@@ -12,7 +12,7 @@
     "price": "6 199 999 Kč",
     "url": "https://reality.bazos.cz/inzerat/224876656/prodej-bytu-21-57-m-celakovice-ul-namesti-5-kvetna.php",
     "source": "Bazoš.cz",
-    "status": "✅ Aktivní",
+    "status": "❌ Staženo z inzerce",
     "first_seen": "2026-10-19"
   },
   "bz_224723725": {
@@ -46,5 +46,212 @@
     "source": "Bazoš.cz",
     "status": "✅ Aktivní",
     "first_seen": "2026-10-19"
+  },
+  "idnes_6ac96772dcb6f708540a4c2d": {
+    "title": "[Byt] prodejbytu 2+1 57 m² (náměstí 5. května, Čelákovice)",
+    "price": "6 199 999 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/byt/celakovice-namesti-5-kvetna/6ac96772dcb6f708540a4c2d/",
+    "source": "Reality.iDNES + Bazoš.cz",
+    "status": "✅ Aktivní",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Byt_57_6200000"
+  },
+  "idnes_6a315d8de2d9dc9bdc08c1e8": {
+    "title": "[Dům] prodejdomu 180 m² s pozemkem 875 m² (Čelákovice - Sedlčánky)",
+    "price": "14 490 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice/6a315d8de2d9dc9bdc08c1e8/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Dům_180_14500000"
+  },
+  "idnes_6ab24b9c61c1da840308837b": {
+    "title": "[Dům] prodejdomu 192 m² s pozemkem 700 m² (Druhá, Čelákovice - Záluží)",
+    "price": "15 900 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice-druha/6ab24b9c61c1da840308837b/",
+    "source": "Reality.iDNES",
+    "status": "✅ Aktivní",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Dům_192_15900000"
+  },
+  "idnes_6ab24b9c7a49b125ab09b704": {
+    "title": "[Dům] prodejdomu 192 m² s pozemkem 735 m² (Druhá, Čelákovice - Záluží)",
+    "price": "16 990 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice-druha/6ab24b9c7a49b125ab09b704/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Dům_192_17000000"
+  },
+  "idnes_6ab24b360745fff390078a8b": {
+    "title": "[Dům] prodejdomu 192 m² s pozemkem 747 m² (Druhá, Čelákovice - Záluží)",
+    "price": "17 200 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice-druha/6ab24b360745fff390078a8b/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Dům_192_17200000"
+  },
+  "idnes_6ab24b5e8c8684db250d962d": {
+    "title": "[Dům] prodejdomu 193 m² s pozemkem 700 m² (Druhá, Čelákovice - Záluží)",
+    "price": "16 590 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice-druha/6ab24b5e8c8684db250d962d/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Dům_193_16600000"
+  },
+  "idnes_6ab24b17d06cb201330fd53f": {
+    "title": "[Dům] prodejdomu 193 m² s pozemkem 705 m² (Druhá, Čelákovice - Záluží)",
+    "price": "17 790 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice-druha/6ab24b17d06cb201330fd53f/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Dům_193_17800000"
+  },
+  "idnes_6ad1cb3e9b46a3cb7a085318": {
+    "title": "[Pozemek/Jiné] prodejstavebního pozemku 767 m² (Druhá, Čelákovice - Záluží)",
+    "price": "8 437 000 Kč(11 000 Kč/m²\n\t\t\t)",
+    "url": "https://reality.idnes.cz/detail/prodej/pozemek/celakovice-druha/6ad1cb3e9b46a3cb7a085318/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Pozemek/Jiné_767_843700000000"
+  },
+  "idnes_6a9674c603e8b0964c071468": {
+    "title": "[Dům] prodejdomu 139 m² s pozemkem 1 m² (Čelákovice)",
+    "price": "5 149 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice/6a9674c603e8b0964c071468/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Dům_139_5100000"
+  },
+  "idnes_6a180057c25589da2207db97": {
+    "title": "[Dům] prodejdomu 97 m² s pozemkem 1 m² (Čelákovice)",
+    "price": "3 749 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice/6a180057c25589da2207db97/",
+    "source": "Reality.iDNES",
+    "status": "✅ Aktivní",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Dům_97_3700000"
+  },
+  "idnes_6a8f6aa8576c3a744f03dc93": {
+    "title": "[Byt] prodejbytu 4+kk 109 m² (Sokolovská, Čelákovice)",
+    "price": "11 800 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/byt/celakovice-sokolovska/6a8f6aa8576c3a744f03dc93/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Byt_109_11800000"
+  },
+  "idnes_6accf860bc4b41c9e708a787": {
+    "title": "[Dům] prodejdomu 131 m² s pozemkem 1 m² (Čelákovice)",
+    "price": "4 749 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice/6accf860bc4b41c9e708a787/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Dům_131_4700000"
+  },
+  "idnes_69d78bc6f37be1e2fd05480c": {
+    "title": "[Byt] prodejbytu 2+1 52 m² (Spojovací, Čelákovice)",
+    "price": "5 200 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/byt/celakovice-spojovaci/69d78bc6f37be1e2fd05480c/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Byt_52_5200000"
+  },
+  "idnes_6aa13f9c2307e554f700e7b2": {
+    "title": "[Byt] prodejbytu 3+kk 76 m² (Volmanova, Čelákovice)",
+    "price": "10 790 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/byt/celakovice-volmanova/6aa13f9c2307e554f700e7b2/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Byt_76_10800000"
+  },
+  "idnes_695c0ef0a0248712e70a3b9b": {
+    "title": "[Pozemek/Jiné] prodejstavebního pozemku 950 m² (Čelákovice)",
+    "price": "8 990 000 Kč(9 463 Kč/m²\n\t\t\t)",
+    "url": "https://reality.idnes.cz/detail/prodej/pozemek/celakovice/695c0ef0a0248712e70a3b9b/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Pozemek/Jiné_950_89900000000"
+  },
+  "idnes_666319d89a449daf8103ed0e": {
+    "title": "[Byt] prodejbytu 3+kk 105 m² (Dělnická, Čelákovice)",
+    "price": "8 990 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/byt/celakovice-delnicka/666319d89a449daf8103ed0e/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Byt_105_9000000"
+  },
+  "idnes_6a0b1afedd325248c406a223": {
+    "title": "[Dům] prodejnájemního domu, činžáku 675 m² (Vašátkova, Čelákovice)",
+    "price": "Cena na vyžádání",
+    "url": "https://reality.idnes.cz/detail/prodej/komercni-nemovitost/celakovice-vasatkova/6a0b1afedd325248c406a223/",
+    "source": "Reality.iDNES",
+    "status": "✅ Aktivní",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Dům_675_info"
+  },
+  "idnes_6a0b1a04fe4f9d91480fb175": {
+    "title": "[Pozemek/Jiné] prodejkomerčního objektu (jiného typu) 675 m² (Vašátkova, Čelákovice)",
+    "price": "Cena na vyžádání",
+    "url": "https://reality.idnes.cz/detail/prodej/komercni-nemovitost/celakovice-vasatkova/6a0b1a04fe4f9d91480fb175/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Pozemek/Jiné_675_info"
+  },
+  "idnes_6ac79074fb3f98020a00f0de": {
+    "title": "[Dům] prodejdomu 151 m² s pozemkem 886 m² (Ferlesova, Čelákovice - Sedlčánky)",
+    "price": "15 980 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice-ferlesova/6ac79074fb3f98020a00f0de/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Dům_151_16000000"
+  },
+  "idnes_6ac7761cfea928a5820f70e9": {
+    "title": "[Byt] prodejbytu 2+1 58 m² (Spojovací, Čelákovice)",
+    "price": "4 999 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/byt/celakovice-spojovaci/6ac7761cfea928a5820f70e9/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Byt_58_5000000"
+  },
+  "idnes_6ab376b2dac44043240eaa2c": {
+    "title": "[Pozemek/Jiné] prodejstavebního pozemku 701 m² (Čtvrtá, Čelákovice)",
+    "price": "7 360 500 Kč(10 500 Kč/m²\n\t\t\t)",
+    "url": "https://reality.idnes.cz/detail/prodej/pozemek/celakovice-ctvrta/6ab376b2dac44043240eaa2c/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Pozemek/Jiné_701_736050000000"
+  },
+  "idnes_6ab2629bee3567e6870c9186": {
+    "title": "[Dům] prodejdomu 193 m² s pozemkem 706 m² (Čtvrtá, Čelákovice)",
+    "price": "16 490 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice-ctvrta/6ab2629bee3567e6870c9186/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Dům_193_16500000"
+  },
+  "idnes_6a959bcc97e82c34d30991e1": {
+    "title": "[Byt] prodejbytu 2+kk 44 m² (Sokolovská, Čelákovice)",
+    "price": "5 490 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/byt/celakovice-sokolovska/6a959bcc97e82c34d30991e1/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-20",
+    "fingerprint": "Byt_44_5500000"
   }
 }
