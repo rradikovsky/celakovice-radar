@@ -1,6 +1,6 @@
 # 🏠 Realitní Radar Čelákovice
 
-Poslední aktualizace: **26.10.2026 10:21:33 (ČR)**  
+Poslední aktualizace: **26.10.2026 11:20:28 (ČR)**  
 Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 | Bazoš: 6`
 
 | Status | Název / Odkaz | Cena | Zdroj | První výskyt |
@@ -37,9 +37,9 @@ Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 |
 | **✅ Aktivní** | [[Pozemek/Jiné] prodejkomerčního objektu (jiného typu) 675 m² (Vašátkova, Čelákovice)](https://reality.idnes.cz/detail/prodej/komercni-nemovitost/celakovice-vasatkova/6a0b1a04fe4f9d91480fb175/) | Cena na vyžádání | Reality.iDNES | 2026-10-20 |
 | **✅ Aktivní** | [[Dům] prodejdomu 151 m² s pozemkem 886 m² (Ferlesova, Čelákovice - Sedlčánky)](https://reality.idnes.cz/detail/prodej/dum/celakovice-ferlesova/6ac79074fb3f98020a00f0de/) | 15 980 000 Kč | Reality.iDNES | 2026-10-20 |
 | **✅ Aktivní** | [[Byt] prodejbytu 2+1 58 m² (Spojovací, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-spojovaci/6ac7761cfea928a5820f70e9/) | 4 999 000 Kč | Reality.iDNES | 2026-10-20 |
-| **✅ Aktivní** | [[Dům] prodejdomu 193 m² s pozemkem 706 m² (Čtvrtá, Čelákovice)](https://reality.idnes.cz/detail/prodej/dum/celakovice-ctvrta/6ab2629bee3567e6870c9186/) | 16 490 000 Kč | Reality.iDNES | 2026-10-20 |
 | **✅ Aktivní** | [[Dům] prodej domu 150 m² (V Prokopě, Čelákovice)](https://reality.idnes.cz/detail/prodej/dum/celakovice-v-prokope/6ad77158230ff360a4001394/) | 10 500 000 Kč | Reality.iDNES | 2026-10-20 |
 | **✅ Aktivní** | [[Pozemek] prodej stavebního pozemku 700 m² (Druhá, Čelákovice - Záluží)](https://reality.idnes.cz/detail/prodej/pozemek/celakovice-druha/6ad8a101cd1c1153c205c4ea/) | 7 350 000 Kč (10 500 Kč/m²
 			) | Reality.iDNES | 2026-10-21 |
 | **❌ Staženo z inzerce** | [[Bazoš Byt] Prodej bytu 2+1, 57 m², Čelákovice, ul. náměstí 5. května](https://reality.bazos.cz/inzerat/224876656/prodej-bytu-21-57-m-celakovice-ul-namesti-5-kvetna.php) | 6 199 999 Kč | Bazoš.cz | 2026-10-19 |
+| **❌ Staženo z inzerce** | [[Dům] prodejdomu 193 m² s pozemkem 706 m² (Čtvrtá, Čelákovice)](https://reality.idnes.cz/detail/prodej/dum/celakovice-ctvrta/6ab2629bee3567e6870c9186/) | 16 490 000 Kč | Reality.iDNES | 2026-10-20 |
 | **❌ Staženo z inzerce** | [[Byt] prodejbytu 2+kk 44 m² (Sokolovská, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-sokolovska/6a959bcc97e82c34d30991e1/) | 5 490 000 Kč | Reality.iDNES | 2026-10-20 |
