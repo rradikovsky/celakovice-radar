@@ -223,7 +223,7 @@
     "price": "4 999 000 Kč",
     "url": "https://reality.idnes.cz/detail/prodej/byt/celakovice-spojovaci/6ac7761cfea928a5820f70e9/",
     "source": "Reality.iDNES",
-    "status": "✅ Aktivní",
+    "status": "❌ Staženo z inzerce",
     "first_seen": "2026-10-20",
     "fingerprint": "Byt_58_5000000"
   },
@@ -271,5 +271,14 @@
     "status": "✅ Aktivní",
     "first_seen": "2026-10-21",
     "fingerprint": "Pozemek_700_735000000000"
+  },
+  "idnes_6ae1f5856c8a0fbada07a2a8": {
+    "title": "[Dům] prodej domu 202 m² s pozemkem 209 m² (Na Požárech, Čelákovice)",
+    "price": "13 950 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice-na-pozarech/6ae1f5856c8a0fbada07a2a8/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-28",
+    "fingerprint": "Dům_202_14000000"
   }
 }
