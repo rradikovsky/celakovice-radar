@@ -214,7 +214,7 @@
     "price": "15 980 000 Kč",
     "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice-ferlesova/6ac79074fb3f98020a00f0de/",
     "source": "Reality.iDNES",
-    "status": "✅ Aktivní",
+    "status": "❌ Staženo z inzerce",
     "first_seen": "2026-10-20",
     "fingerprint": "Dům_151_16000000"
   },
@@ -289,5 +289,14 @@
     "status": "🔥 Novinka",
     "first_seen": "2026-10-29",
     "fingerprint": "Garáž_x_900000"
+  },
+  "idnes_6ae32215ecc241fdd903b9a2": {
+    "title": "[Dům] prodej domu 314 m² s pozemkem 695 m² (Masarykova, Čelákovice)",
+    "price": "24 444 500 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice-masarykova/6ae32215ecc241fdd903b9a2/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-29",
+    "fingerprint": "Dům_314_24400000"
   }
 }
