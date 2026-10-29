@@ -280,5 +280,14 @@
     "status": "✅ Aktivní",
     "first_seen": "2026-10-28",
     "fingerprint": "Dům_202_14000000"
+  },
+  "bz_225723044": {
+    "title": "[Garáž] Garáž Čalákovice",
+    "price": "900 000 Kč",
+    "url": "https://reality.bazos.cz/inzerat/225723044/garaz-calakovice.php",
+    "source": "Bazoš.cz",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-29",
+    "fingerprint": "Garáž_x_900000"
   }
 }
