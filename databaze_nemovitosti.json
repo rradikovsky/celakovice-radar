@@ -307,5 +307,14 @@
     "status": "✅ Aktivní",
     "first_seen": "2026-10-30",
     "fingerprint": "Pozemek_4264_13800000"
+  },
+  "bz_225792870": {
+    "title": "[Garáž] Garáž Čelákovice",
+    "price": "800 000 Kč",
+    "url": "https://reality.bazos.cz/inzerat/225792870/garaz-celakovice.php",
+    "source": "Bazoš.cz",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-10-31",
+    "fingerprint": "Garáž_x_800000"
   }
 }

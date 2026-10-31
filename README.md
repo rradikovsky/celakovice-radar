@@ -1,10 +1,11 @@
 # 🏠 Realitní Radar Čelákovice
 
-Poslední aktualizace: **31.10.2026 05:21:13 (ČR)**  
-Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 | Bazoš: 7`
+Poslední aktualizace: **31.10.2026 06:17:36 (ČR)**  
+Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 | Bazoš: 8`
 
 | Status | Název / Odkaz | Cena | Zdroj | První výskyt |
 | :--- | :--- | :--- | :--- | :--- |
+| **🔥 Novinka** | [[Garáž] Garáž Čelákovice](https://reality.bazos.cz/inzerat/225792870/garaz-celakovice.php) | 800 000 Kč | Bazoš.cz | 2026-10-31 |
 | **📉 Změna ceny** | [[Pozemek/Jiné] prodejstavebního pozemku 767 m² (Druhá, Čelákovice - Záluží)](https://reality.idnes.cz/detail/prodej/pozemek/celakovice-druha/6ad1cb3e9b46a3cb7a085318/) | 8 437 000 Kč (11 000 Kč/m²
 			) (původně 8 437 000 Kč(11 000 Kč/m²
 			)) | Reality.iDNES | 2026-10-20 |
