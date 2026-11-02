@@ -1,6 +1,6 @@
 # 🏠 Realitní Radar Čelákovice
 
-Poslední aktualizace: **02.11.2026 00:47:22 (ČR)**  
+Poslední aktualizace: **02.11.2026 01:34:45 (ČR)**  
 Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 | Bazoš: 8`
 
 | Status | Název / Odkaz | Cena | Zdroj | První výskyt |
