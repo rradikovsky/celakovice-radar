@@ -193,19 +193,19 @@
   },
   "idnes_6a0b1afedd325248c406a223": {
     "title": "[Dům] prodejnájemního domu, činžáku 675 m² (Vašátkova, Čelákovice)",
-    "price": "Cena na vyžádání",
+    "price": "42 000 000 Kč (62 222 Kč/m²\n\t\t\t) (původně Cena na vyžádání)",
     "url": "https://reality.idnes.cz/detail/prodej/komercni-nemovitost/celakovice-vasatkova/6a0b1afedd325248c406a223/",
     "source": "Reality.iDNES",
-    "status": "✅ Aktivní",
+    "status": "📉 Změna ceny",
     "first_seen": "2026-10-20",
     "fingerprint": "Dům_675_info"
   },
   "idnes_6a0b1a04fe4f9d91480fb175": {
     "title": "[Pozemek/Jiné] prodejkomerčního objektu (jiného typu) 675 m² (Vašátkova, Čelákovice)",
-    "price": "Cena na vyžádání",
+    "price": "42 000 000 Kč (62 222 Kč/m²\n\t\t\t) (původně Cena na vyžádání)",
     "url": "https://reality.idnes.cz/detail/prodej/komercni-nemovitost/celakovice-vasatkova/6a0b1a04fe4f9d91480fb175/",
     "source": "Reality.iDNES",
-    "status": "✅ Aktivní",
+    "status": "📉 Změna ceny",
     "first_seen": "2026-10-20",
     "fingerprint": "Pozemek/Jiné_675_info"
   },
@@ -316,5 +316,14 @@
     "status": "✅ Aktivní",
     "first_seen": "2026-10-31",
     "fingerprint": "Garáž_x_800000"
+  },
+  "idnes_69ce67f506876c3efa0631a4": {
+    "title": "[Dům] prodej domu 675 m² s pozemkem 2 791 m² (Vašátkova, Čelákovice)",
+    "price": "42 000 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice-vasatkova/69ce67f506876c3efa0631a4/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-11-02",
+    "fingerprint": "Dům_675_42000000"
   }
 }
