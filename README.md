@@ -1,7 +1,7 @@
 # 🏠 Realitní Radar Čelákovice
 
-Poslední aktualizace: **03.11.2026 15:00:45 (ČR)**  
-Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 | Bazoš: 6`
+Poslední aktualizace: **03.11.2026 15:55:24 (ČR)**  
+Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 | Bazoš: 7`
 
 | Status | Název / Odkaz | Cena | Zdroj | První výskyt |
 | :--- | :--- | :--- | :--- | :--- |
@@ -42,6 +42,7 @@ Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 |
 | **✅ Aktivní** | [[Dům] prodej domu 314 m² s pozemkem 695 m² (Masarykova, Čelákovice)](https://reality.idnes.cz/detail/prodej/dum/celakovice-masarykova/6ae32215ecc241fdd903b9a2/) | 24 444 500 Kč | Reality.iDNES | 2026-10-29 |
 | **✅ Aktivní** | [[Pozemek] Prodej pozemku 4264 m2 Přístavní, Čelákovice](https://reality.bazos.cz/inzerat/225761343/prodej-pozemku-4264-m2-pristavni-celakovice.php) | 13 800 000 Kč | Bazoš.cz | 2026-10-30 |
 | **✅ Aktivní** | [[Dům] prodej domu 675 m² s pozemkem 2 791 m² (Vašátkova, Čelákovice)](https://reality.idnes.cz/detail/prodej/dum/celakovice-vasatkova/69ce67f506876c3efa0631a4/) | 42 000 000 Kč | Reality.iDNES | 2026-11-02 |
+| **✅ Aktivní** | [[Byt] prodej bytu 2+1 57 m² (náměstí 5. května, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-namesti-5-kvetna/6ae9f4b36c771b0f9c003bef/) | 6 000 000 Kč | Reality.iDNES + Bazoš.cz | 2026-11-03 |
 | **❌ Staženo z inzerce** | [[Bazoš Byt] Prodej bytu 2+1, 57 m², Čelákovice, ul. náměstí 5. května](https://reality.bazos.cz/inzerat/224876656/prodej-bytu-21-57-m-celakovice-ul-namesti-5-kvetna.php) | 6 199 999 Kč | Bazoš.cz | 2026-10-19 |
 | **❌ Staženo z inzerce** | [[Bazoš Pozemek] Prodej pozemku 4264 m2 Přístavní, Čelákovice](https://reality.bazos.cz/inzerat/223189436/prodej-pozemku-4264-m2-pristavni-celakovice.php) | 13 800 000 Kč | Bazoš.cz | 2026-10-19 |
 | **❌ Staženo z inzerce** | [[Bazoš Garáž] Garáž Čalákovice](https://reality.bazos.cz/inzerat/223136340/garaz-calakovice.php) | 900 000 Kč | Bazoš.cz | 2026-10-19 |

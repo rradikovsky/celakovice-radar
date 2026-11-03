@@ -325,5 +325,14 @@
     "status": "✅ Aktivní",
     "first_seen": "2026-11-02",
     "fingerprint": "Dům_675_42000000"
+  },
+  "idnes_6ae9f4b36c771b0f9c003bef": {
+    "title": "[Byt] prodej bytu 2+1 57 m² (náměstí 5. května, Čelákovice)",
+    "price": "6 000 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/byt/celakovice-namesti-5-kvetna/6ae9f4b36c771b0f9c003bef/",
+    "source": "Reality.iDNES + Bazoš.cz",
+    "status": "✅ Aktivní",
+    "first_seen": "2026-11-03",
+    "fingerprint": "Byt_57_6000000"
   }
 }
