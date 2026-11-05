@@ -61,7 +61,7 @@
     "price": "14 490 000 Kč",
     "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice/6a315d8de2d9dc9bdc08c1e8/",
     "source": "Reality.iDNES",
-    "status": "✅ Aktivní",
+    "status": "❌ Staženo z inzerce",
     "first_seen": "2026-10-20",
     "fingerprint": "Dům_180_14500000"
   },
@@ -223,7 +223,7 @@
     "price": "4 999 000 Kč",
     "url": "https://reality.idnes.cz/detail/prodej/byt/celakovice-spojovaci/6ac7761cfea928a5820f70e9/",
     "source": "Reality.iDNES",
-    "status": "❌ Staženo z inzerce",
+    "status": "✅ Aktivní",
     "first_seen": "2026-10-20",
     "fingerprint": "Byt_58_5000000"
   },

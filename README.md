@@ -1,6 +1,6 @@
 # 🏠 Realitní Radar Čelákovice
 
-Poslední aktualizace: **05.11.2026 02:30:15 (ČR)**  
+Poslední aktualizace: **05.11.2026 03:32:34 (ČR)**  
 Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 | Bazoš: 6`
 
 | Status | Název / Odkaz | Cena | Zdroj | První výskyt |
@@ -21,7 +21,6 @@ Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 |
 | **✅ Aktivní** | [[Bazoš Byt] Čelákovice, prodej DV bytu 2+1/L o celkové výměře 55 m2, uli](https://reality.bazos.cz/inzerat/225094610/celakovice-prodej-dv-bytu-21l-o-celkove-vymere-55-m2-uli.php) | 5 200 000 Kč | Bazoš.cz | 2026-10-19 |
 | **✅ Aktivní** | [[Bazoš Dům] Prodej rodinného domu 200 m², Čelákovice, ev.č. 00335](https://reality.bazos.cz/inzerat/224723725/prodej-rodinneho-domu-200-m-celakovice-evc-00335.php) | 12 690 000 Kč | Bazoš.cz | 2026-10-19 |
 | **✅ Aktivní** | [[Bazoš Pozemek] Spekulační - stát 907 m², Podíl 67 % o výměře 605 m²](https://reality.bazos.cz/inzerat/224966373/spekulacni-stat-907-m-podil-67-o-vymere-605-m.php) | 217 691 Kč | Bazoš.cz | 2026-10-19 |
-| **✅ Aktivní** | [[Dům] prodejdomu 180 m² s pozemkem 875 m² (Čelákovice - Sedlčánky)](https://reality.idnes.cz/detail/prodej/dum/celakovice/6a315d8de2d9dc9bdc08c1e8/) | 14 490 000 Kč | Reality.iDNES | 2026-10-20 |
 | **✅ Aktivní** | [[Dům] prodejdomu 192 m² s pozemkem 700 m² (Druhá, Čelákovice - Záluží)](https://reality.idnes.cz/detail/prodej/dum/celakovice-druha/6ab24b9c61c1da840308837b/) | 15 900 000 Kč | Reality.iDNES | 2026-10-20 |
 | **✅ Aktivní** | [[Dům] prodejdomu 192 m² s pozemkem 735 m² (Druhá, Čelákovice - Záluží)](https://reality.idnes.cz/detail/prodej/dum/celakovice-druha/6ab24b9c7a49b125ab09b704/) | 16 990 000 Kč | Reality.iDNES | 2026-10-20 |
 | **✅ Aktivní** | [[Dům] prodejdomu 192 m² s pozemkem 747 m² (Druhá, Čelákovice - Záluží)](https://reality.idnes.cz/detail/prodej/dum/celakovice-druha/6ab24b360745fff390078a8b/) | 17 200 000 Kč | Reality.iDNES | 2026-10-20 |
@@ -35,6 +34,7 @@ Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 |
 | **✅ Aktivní** | [[Byt] prodejbytu 3+kk 76 m² (Volmanova, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-volmanova/6aa13f9c2307e554f700e7b2/) | 10 790 000 Kč | Reality.iDNES | 2026-10-20 |
 | **✅ Aktivní** | [[Byt] prodejbytu 3+kk 105 m² (Dělnická, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-delnicka/666319d89a449daf8103ed0e/) | 8 990 000 Kč | Reality.iDNES | 2026-10-20 |
 | **✅ Aktivní** | [[Dům] prodejdomu 151 m² s pozemkem 886 m² (Ferlesova, Čelákovice - Sedlčánky)](https://reality.idnes.cz/detail/prodej/dum/celakovice-ferlesova/6ac79074fb3f98020a00f0de/) | 15 980 000 Kč | Reality.iDNES | 2026-10-20 |
+| **✅ Aktivní** | [[Byt] prodejbytu 2+1 58 m² (Spojovací, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-spojovaci/6ac7761cfea928a5820f70e9/) | 4 999 000 Kč | Reality.iDNES | 2026-10-20 |
 | **✅ Aktivní** | [[Dům] prodej domu 150 m² (V Prokopě, Čelákovice)](https://reality.idnes.cz/detail/prodej/dum/celakovice-v-prokope/6ad77158230ff360a4001394/) | 10 500 000 Kč | Reality.iDNES | 2026-10-20 |
 | **✅ Aktivní** | [[Dům] prodej domu 202 m² s pozemkem 209 m² (Na Požárech, Čelákovice)](https://reality.idnes.cz/detail/prodej/dum/celakovice-na-pozarech/6ae1f5856c8a0fbada07a2a8/) | 13 950 000 Kč | Reality.iDNES + Bazoš.cz | 2026-10-28 |
 | **✅ Aktivní** | [[Dům] prodej domu 314 m² s pozemkem 695 m² (Masarykova, Čelákovice)](https://reality.idnes.cz/detail/prodej/dum/celakovice-masarykova/6ae32215ecc241fdd903b9a2/) | 24 444 500 Kč | Reality.iDNES | 2026-10-29 |
@@ -45,7 +45,7 @@ Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 |
 | **❌ Staženo z inzerce** | [[Bazoš Pozemek] Prodej pozemku 4264 m2 Přístavní, Čelákovice](https://reality.bazos.cz/inzerat/223189436/prodej-pozemku-4264-m2-pristavni-celakovice.php) | 13 800 000 Kč | Bazoš.cz | 2026-10-19 |
 | **❌ Staženo z inzerce** | [[Bazoš Garáž] Garáž Čalákovice](https://reality.bazos.cz/inzerat/223136340/garaz-calakovice.php) | 900 000 Kč | Bazoš.cz | 2026-10-19 |
 | **❌ Staženo z inzerce** | [[Byt] prodejbytu 2+1 57 m² (náměstí 5. května, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-namesti-5-kvetna/6ac96772dcb6f708540a4c2d/) | 6 199 999 Kč | Reality.iDNES + Bazoš.cz | 2026-10-20 |
-| **❌ Staženo z inzerce** | [[Byt] prodejbytu 2+1 58 m² (Spojovací, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-spojovaci/6ac7761cfea928a5820f70e9/) | 4 999 000 Kč | Reality.iDNES | 2026-10-20 |
+| **❌ Staženo z inzerce** | [[Dům] prodejdomu 180 m² s pozemkem 875 m² (Čelákovice - Sedlčánky)](https://reality.idnes.cz/detail/prodej/dum/celakovice/6a315d8de2d9dc9bdc08c1e8/) | 14 490 000 Kč | Reality.iDNES | 2026-10-20 |
 | **❌ Staženo z inzerce** | [[Dům] prodejdomu 193 m² s pozemkem 706 m² (Čtvrtá, Čelákovice)](https://reality.idnes.cz/detail/prodej/dum/celakovice-ctvrta/6ab2629bee3567e6870c9186/) | 16 490 000 Kč | Reality.iDNES | 2026-10-20 |
 | **❌ Staženo z inzerce** | [[Byt] prodejbytu 2+kk 44 m² (Sokolovská, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-sokolovska/6a959bcc97e82c34d30991e1/) | 5 490 000 Kč | Reality.iDNES | 2026-10-20 |
 | **❌ Staženo z inzerce** | [[Pozemek] prodej stavebního pozemku 700 m² (Druhá, Čelákovice - Záluží)](https://reality.idnes.cz/detail/prodej/pozemek/celakovice-druha/6ad8a101cd1c1153c205c4ea/) | 7 350 000 Kč (10 500 Kč/m²
