@@ -223,7 +223,7 @@
     "price": "4 999 000 Kč",
     "url": "https://reality.idnes.cz/detail/prodej/byt/celakovice-spojovaci/6ac7761cfea928a5820f70e9/",
     "source": "Reality.iDNES",
-    "status": "✅ Aktivní",
+    "status": "❌ Staženo z inzerce",
     "first_seen": "2026-10-20",
     "fingerprint": "Byt_58_5000000"
   },
@@ -334,5 +334,14 @@
     "status": "❌ Staženo z inzerce",
     "first_seen": "2026-11-03",
     "fingerprint": "Byt_57_6000000"
+  },
+  "idnes_6af2ed0767dcd38e410c47a4": {
+    "title": "[Byt] prodej bytu 2+1 51 m² (Stankovského, Čelákovice)",
+    "price": "5 500 000 Kč",
+    "url": "https://reality.idnes.cz/detail/prodej/byt/celakovice-stankovskeho/6af2ed0767dcd38e410c47a4/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-11-10",
+    "fingerprint": "Byt_51_5500000"
   }
 }
