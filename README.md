@@ -1,11 +1,10 @@
 # 🏠 Realitní Radar Čelákovice
 
-Poslední aktualizace: **10.11.2026 23:38:05 (ČR)**  
+Poslední aktualizace: **11.11.2026 00:15:57 (ČR)**  
 Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 | Bazoš: 5`
 
 | Status | Název / Odkaz | Cena | Zdroj | První výskyt |
 | :--- | :--- | :--- | :--- | :--- |
-| **🔥 Novinka** | [[Byt] prodej bytu 2+1 51 m² (Stankovského, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-stankovskeho/6af2ed0767dcd38e410c47a4/) | 5 500 000 Kč | Reality.iDNES | 2026-11-10 |
 | **📉 Změna ceny** | [[Pozemek/Jiné] prodejstavebního pozemku 767 m² (Druhá, Čelákovice - Záluží)](https://reality.idnes.cz/detail/prodej/pozemek/celakovice-druha/6ad1cb3e9b46a3cb7a085318/) | 8 437 000 Kč (11 000 Kč/m²
 			) (původně 8 437 000 Kč(11 000 Kč/m²
 			)) | Reality.iDNES | 2026-10-20 |
@@ -41,6 +40,7 @@ Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 |
 | **✅ Aktivní** | [[Dům] prodej domu 314 m² s pozemkem 695 m² (Masarykova, Čelákovice)](https://reality.idnes.cz/detail/prodej/dum/celakovice-masarykova/6ae32215ecc241fdd903b9a2/) | 24 444 500 Kč | Reality.iDNES | 2026-10-29 |
 | **✅ Aktivní** | [[Pozemek] Prodej pozemku 4264 m2 Přístavní, Čelákovice](https://reality.bazos.cz/inzerat/225761343/prodej-pozemku-4264-m2-pristavni-celakovice.php) | 13 800 000 Kč | Bazoš.cz | 2026-10-30 |
 | **✅ Aktivní** | [[Dům] prodej domu 675 m² s pozemkem 2 791 m² (Vašátkova, Čelákovice)](https://reality.idnes.cz/detail/prodej/dum/celakovice-vasatkova/69ce67f506876c3efa0631a4/) | 42 000 000 Kč | Reality.iDNES | 2026-11-02 |
+| **✅ Aktivní** | [[Byt] prodej bytu 2+1 51 m² (Stankovského, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-stankovskeho/6af2ed0767dcd38e410c47a4/) | 5 500 000 Kč | Reality.iDNES | 2026-11-10 |
 | **❌ Staženo z inzerce** | [[Bazoš Byt] Prodej bytu 2+1, 57 m², Čelákovice, ul. náměstí 5. května](https://reality.bazos.cz/inzerat/224876656/prodej-bytu-21-57-m-celakovice-ul-namesti-5-kvetna.php) | 6 199 999 Kč | Bazoš.cz | 2026-10-19 |
 | **❌ Staženo z inzerce** | [[Bazoš Pozemek] Prodej pozemku 4264 m2 Přístavní, Čelákovice](https://reality.bazos.cz/inzerat/223189436/prodej-pozemku-4264-m2-pristavni-celakovice.php) | 13 800 000 Kč | Bazoš.cz | 2026-10-19 |
 | **❌ Staženo z inzerce** | [[Bazoš Garáž] Garáž Čalákovice](https://reality.bazos.cz/inzerat/223136340/garaz-calakovice.php) | 900 000 Kč | Bazoš.cz | 2026-10-19 |
