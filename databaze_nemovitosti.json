@@ -214,7 +214,7 @@
     "price": "15 980 000 Kč",
     "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice-ferlesova/6ac79074fb3f98020a00f0de/",
     "source": "Reality.iDNES",
-    "status": "✅ Aktivní",
+    "status": "❌ Staženo z inzerce",
     "first_seen": "2026-10-20",
     "fingerprint": "Dům_151_16000000"
   },
@@ -343,5 +343,14 @@
     "status": "✅ Aktivní",
     "first_seen": "2026-11-10",
     "fingerprint": "Byt_51_5500000"
+  },
+  "idnes_6af4704f3881dadca206d27c": {
+    "title": "[Pozemek] prodej komerčního objektu (jiného typu) 463 m² (Sokolovská, Čelákovice)",
+    "price": "15 000 000 Kč (32 397 Kč/m²\n\t\t\t)",
+    "url": "https://reality.idnes.cz/detail/prodej/komercni-nemovitost/celakovice-sokolovska/6af4704f3881dadca206d27c/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-11-11",
+    "fingerprint": "Pozemek_463_1500000000000"
   }
 }
