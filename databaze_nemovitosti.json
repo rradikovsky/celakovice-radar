@@ -142,7 +142,7 @@
     "price": "11 800 000 Kč",
     "url": "https://reality.idnes.cz/detail/prodej/byt/celakovice-sokolovska/6a8f6aa8576c3a744f03dc93/",
     "source": "Reality.iDNES",
-    "status": "✅ Aktivní",
+    "status": "❌ Staženo z inzerce",
     "first_seen": "2026-10-20",
     "fingerprint": "Byt_109_11800000"
   },
@@ -214,7 +214,7 @@
     "price": "15 980 000 Kč",
     "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice-ferlesova/6ac79074fb3f98020a00f0de/",
     "source": "Reality.iDNES",
-    "status": "❌ Staženo z inzerce",
+    "status": "✅ Aktivní",
     "first_seen": "2026-10-20",
     "fingerprint": "Dům_151_16000000"
   },
