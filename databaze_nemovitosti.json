@@ -211,10 +211,10 @@
   },
   "idnes_6ac79074fb3f98020a00f0de": {
     "title": "[Dům] prodejdomu 151 m² s pozemkem 886 m² (Ferlesova, Čelákovice - Sedlčánky)",
-    "price": "15 980 000 Kč",
+    "price": "15 490 000 Kč (původně 15 980 000 Kč)",
     "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice-ferlesova/6ac79074fb3f98020a00f0de/",
     "source": "Reality.iDNES",
-    "status": "✅ Aktivní",
+    "status": "📉 Změna ceny",
     "first_seen": "2026-10-20",
     "fingerprint": "Dům_151_16000000"
   },
