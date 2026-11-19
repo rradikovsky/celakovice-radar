@@ -241,7 +241,7 @@
     "price": "16 490 000 Kč",
     "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice-ctvrta/6ab2629bee3567e6870c9186/",
     "source": "Reality.iDNES",
-    "status": "✅ Aktivní",
+    "status": "❌ Staženo z inzerce",
     "first_seen": "2026-10-20",
     "fingerprint": "Dům_193_16500000"
   },
@@ -352,5 +352,14 @@
     "status": "✅ Aktivní",
     "first_seen": "2026-11-11",
     "fingerprint": "Pozemek_463_1500000000000"
+  },
+  "idnes_6afe154073b3d11d88074125": {
+    "title": "[Pozemek] prodej louky 3 589 m² (Čelákovice)",
+    "price": "249 000 Kč (69 Kč/m²\n\t\t\t)",
+    "url": "https://reality.idnes.cz/detail/prodej/pozemek/celakovice/6afe154073b3d11d88074125/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-11-19",
+    "fingerprint": "Pozemek_589_24900000"
   }
 }
