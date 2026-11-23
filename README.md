@@ -1,6 +1,6 @@
 # 🏠 Realitní Radar Čelákovice
 
-Poslední aktualizace: **23.11.2026 11:09:04 (ČR)**  
+Poslední aktualizace: **23.11.2026 23:08:42 (ČR)**  
 Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 | Bazoš: 5`
 
 | Status | Název / Odkaz | Cena | Zdroj | První výskyt |
@@ -33,9 +33,9 @@ Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 |
 | **✅ Aktivní** | [[Dům] prodejdomu 97 m² s pozemkem 1 m² (Čelákovice)](https://reality.idnes.cz/detail/prodej/dum/celakovice/6a180057c25589da2207db97/) | 3 749 000 Kč | Reality.iDNES | 2026-10-20 |
 | **✅ Aktivní** | [[Dům] prodejdomu 131 m² s pozemkem 1 m² (Čelákovice)](https://reality.idnes.cz/detail/prodej/dum/celakovice/6accf860bc4b41c9e708a787/) | 4 749 000 Kč | Reality.iDNES | 2026-10-20 |
 | **✅ Aktivní** | [[Byt] prodejbytu 2+1 52 m² (Spojovací, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-spojovaci/69d78bc6f37be1e2fd05480c/) | 5 200 000 Kč | Reality.iDNES | 2026-10-20 |
-| **✅ Aktivní** | [[Byt] prodejbytu 3+kk 76 m² (Volmanova, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-volmanova/6aa13f9c2307e554f700e7b2/) | 10 790 000 Kč | Reality.iDNES | 2026-10-20 |
 | **✅ Aktivní** | [[Byt] prodejbytu 3+kk 105 m² (Dělnická, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-delnicka/666319d89a449daf8103ed0e/) | 8 990 000 Kč | Reality.iDNES | 2026-10-20 |
 | **✅ Aktivní** | [[Byt] prodejbytu 2+1 58 m² (Spojovací, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-spojovaci/6ac7761cfea928a5820f70e9/) | 4 999 000 Kč | Reality.iDNES | 2026-10-20 |
+| **✅ Aktivní** | [[Dům] prodejdomu 193 m² s pozemkem 706 m² (Čtvrtá, Čelákovice)](https://reality.idnes.cz/detail/prodej/dum/celakovice-ctvrta/6ab2629bee3567e6870c9186/) | 16 490 000 Kč | Reality.iDNES | 2026-10-20 |
 | **✅ Aktivní** | [[Dům] prodej domu 150 m² (V Prokopě, Čelákovice)](https://reality.idnes.cz/detail/prodej/dum/celakovice-v-prokope/6ad77158230ff360a4001394/) | 10 500 000 Kč | Reality.iDNES | 2026-10-20 |
 | **✅ Aktivní** | [[Dům] prodej domu 314 m² s pozemkem 695 m² (Masarykova, Čelákovice)](https://reality.idnes.cz/detail/prodej/dum/celakovice-masarykova/6ae32215ecc241fdd903b9a2/) | 24 444 500 Kč | Reality.iDNES | 2026-10-29 |
 | **✅ Aktivní** | [[Pozemek] Prodej pozemku 4264 m2 Přístavní, Čelákovice](https://reality.bazos.cz/inzerat/225761343/prodej-pozemku-4264-m2-pristavni-celakovice.php) | 13 800 000 Kč | Bazoš.cz | 2026-10-30 |
@@ -49,7 +49,7 @@ Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 |
 | **❌ Staženo z inzerce** | [[Bazoš Garáž] Garáž Čalákovice](https://reality.bazos.cz/inzerat/223136340/garaz-calakovice.php) | 900 000 Kč | Bazoš.cz | 2026-10-19 |
 | **❌ Staženo z inzerce** | [[Byt] prodejbytu 2+1 57 m² (náměstí 5. května, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-namesti-5-kvetna/6ac96772dcb6f708540a4c2d/) | 6 199 999 Kč | Reality.iDNES + Bazoš.cz | 2026-10-20 |
 | **❌ Staženo z inzerce** | [[Byt] prodejbytu 4+kk 109 m² (Sokolovská, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-sokolovska/6a8f6aa8576c3a744f03dc93/) | 11 800 000 Kč | Reality.iDNES | 2026-10-20 |
-| **❌ Staženo z inzerce** | [[Dům] prodejdomu 193 m² s pozemkem 706 m² (Čtvrtá, Čelákovice)](https://reality.idnes.cz/detail/prodej/dum/celakovice-ctvrta/6ab2629bee3567e6870c9186/) | 16 490 000 Kč | Reality.iDNES | 2026-10-20 |
+| **❌ Staženo z inzerce** | [[Byt] prodejbytu 3+kk 76 m² (Volmanova, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-volmanova/6aa13f9c2307e554f700e7b2/) | 10 790 000 Kč | Reality.iDNES | 2026-10-20 |
 | **❌ Staženo z inzerce** | [[Byt] prodejbytu 2+kk 44 m² (Sokolovská, Čelákovice)](https://reality.idnes.cz/detail/prodej/byt/celakovice-sokolovska/6a959bcc97e82c34d30991e1/) | 5 490 000 Kč | Reality.iDNES | 2026-10-20 |
 | **❌ Staženo z inzerce** | [[Pozemek] prodej stavebního pozemku 700 m² (Druhá, Čelákovice - Záluží)](https://reality.idnes.cz/detail/prodej/pozemek/celakovice-druha/6ad8a101cd1c1153c205c4ea/) | 7 350 000 Kč (10 500 Kč/m²
 			) | Reality.iDNES | 2026-10-21 |
