@@ -361,5 +361,14 @@
     "status": "✅ Aktivní",
     "first_seen": "2026-11-19",
     "fingerprint": "Pozemek_589_24900000"
+  },
+  "bz_226836500": {
+    "title": "[Garáž] Prodej parkovacího stání - Čelákovice - Praha Východ",
+    "price": "480 000 Kč",
+    "url": "https://reality.bazos.cz/inzerat/226836500/prodej-parkovaciho-stani-celakovice-praha-vychod.php",
+    "source": "Bazoš.cz",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-11-23",
+    "fingerprint": "Garáž_x_500000"
   }
 }

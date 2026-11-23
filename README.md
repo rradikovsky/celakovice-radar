@@ -1,10 +1,11 @@
 # 🏠 Realitní Radar Čelákovice
 
-Poslední aktualizace: **23.11.2026 02:48:08 (ČR)**  
-Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 | Bazoš: 4`
+Poslední aktualizace: **23.11.2026 11:09:04 (ČR)**  
+Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 | Bazoš: 5`
 
 | Status | Název / Odkaz | Cena | Zdroj | První výskyt |
 | :--- | :--- | :--- | :--- | :--- |
+| **🔥 Novinka** | [[Garáž] Prodej parkovacího stání - Čelákovice - Praha Východ](https://reality.bazos.cz/inzerat/226836500/prodej-parkovaciho-stani-celakovice-praha-vychod.php) | 480 000 Kč | Bazoš.cz | 2026-11-23 |
 | **📉 Změna ceny** | [[Pozemek/Jiné] prodejstavebního pozemku 767 m² (Druhá, Čelákovice - Záluží)](https://reality.idnes.cz/detail/prodej/pozemek/celakovice-druha/6ad1cb3e9b46a3cb7a085318/) | 8 437 000 Kč (11 000 Kč/m²
 			) (původně 8 437 000 Kč(11 000 Kč/m²
 			)) | Reality.iDNES | 2026-10-20 |
