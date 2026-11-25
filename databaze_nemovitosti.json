@@ -406,5 +406,14 @@
     "status": "🔥 Novinka",
     "first_seen": "2026-11-25",
     "fingerprint": "Pozemek_x_4100000"
+  },
+  "bz_226931925": {
+    "title": "[Dům] Prodej RD Čelákovice - Sedlčánky",
+    "price": "13 500 000 Kč",
+    "url": "https://reality.bazos.cz/inzerat/226931925/prodej-rd-celakovice-sedlcanky.php",
+    "source": "Bazoš.cz",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-11-25",
+    "fingerprint": "Dům_x_13500000"
   }
 }

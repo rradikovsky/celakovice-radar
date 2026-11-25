@@ -1,13 +1,14 @@
 # 🏠 Realitní Radar Čelákovice
 
-Poslední aktualizace: **25.11.2026 11:48:04 (ČR)**  
-Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 | Bazoš: 7`
+Poslední aktualizace: **25.11.2026 21:21:15 (ČR)**  
+Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 | Bazoš: 8`
 
 | Status | Název / Odkaz | Cena | Zdroj | První výskyt |
 | :--- | :--- | :--- | :--- | :--- |
 | **🔥 Novinka** | [[Pozemek] prodej pole 60 521 m² (Čelákovice - Sedlčánky)](https://reality.idnes.cz/detail/prodej/pozemek/celakovice/6b06a70db1f13f22b108318e/) | 4 115 428 Kč (68 Kč/m²
 			) | Reality.iDNES | 2026-11-25 |
 | **🔥 Novinka** | [[Pozemek] Zemědělská půda, prodej, Sedlčánky, Čelákovice, Praha východ](https://reality.bazos.cz/inzerat/226925815/zemedelska-puda-prodej-sedlcanky-celakovice-praha-vychod.php) | 4 115 428 Kč | Bazoš.cz | 2026-11-25 |
+| **🔥 Novinka** | [[Dům] Prodej RD Čelákovice - Sedlčánky](https://reality.bazos.cz/inzerat/226931925/prodej-rd-celakovice-sedlcanky.php) | 13 500 000 Kč | Bazoš.cz | 2026-11-25 |
 | **📉 Změna ceny** | [[Pozemek/Jiné] prodejstavebního pozemku 767 m² (Druhá, Čelákovice - Záluží)](https://reality.idnes.cz/detail/prodej/pozemek/celakovice-druha/6ad1cb3e9b46a3cb7a085318/) | 8 437 000 Kč (11 000 Kč/m²
 			) (původně 8 437 000 Kč(11 000 Kč/m²
 			)) | Reality.iDNES | 2026-10-20 |
