@@ -223,7 +223,7 @@
     "price": "4 999 000 Kč",
     "url": "https://reality.idnes.cz/detail/prodej/byt/celakovice-spojovaci/6ac7761cfea928a5820f70e9/",
     "source": "Reality.iDNES",
-    "status": "✅ Aktivní",
+    "status": "❌ Staženo z inzerce",
     "first_seen": "2026-10-20",
     "fingerprint": "Byt_58_5000000"
   },
@@ -388,5 +388,23 @@
     "status": "✅ Aktivní",
     "first_seen": "2026-11-24",
     "fingerprint": "Pozemek_x_1000000"
+  },
+  "idnes_6b06a70db1f13f22b108318e": {
+    "title": "[Pozemek] prodej pole 60 521 m² (Čelákovice - Sedlčánky)",
+    "price": "4 115 428 Kč (68 Kč/m²\n\t\t\t)",
+    "url": "https://reality.idnes.cz/detail/prodej/pozemek/celakovice/6b06a70db1f13f22b108318e/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-11-25",
+    "fingerprint": "Pozemek_521_411500000"
+  },
+  "bz_226925815": {
+    "title": "[Pozemek] Zemědělská půda, prodej, Sedlčánky, Čelákovice, Praha východ",
+    "price": "4 115 428 Kč",
+    "url": "https://reality.bazos.cz/inzerat/226925815/zemedelska-puda-prodej-sedlcanky-celakovice-praha-vychod.php",
+    "source": "Bazoš.cz",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-11-25",
+    "fingerprint": "Pozemek_x_4100000"
   }
 }
