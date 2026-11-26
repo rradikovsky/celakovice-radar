@@ -394,7 +394,7 @@
     "price": "4 115 428 Kč (68 Kč/m²\n\t\t\t)",
     "url": "https://reality.idnes.cz/detail/prodej/pozemek/celakovice/6b06a70db1f13f22b108318e/",
     "source": "Reality.iDNES",
-    "status": "🔥 Novinka",
+    "status": "✅ Aktivní",
     "first_seen": "2026-11-25",
     "fingerprint": "Pozemek_521_411500000"
   },
@@ -403,7 +403,7 @@
     "price": "4 115 428 Kč",
     "url": "https://reality.bazos.cz/inzerat/226925815/zemedelska-puda-prodej-sedlcanky-celakovice-praha-vychod.php",
     "source": "Bazoš.cz",
-    "status": "🔥 Novinka",
+    "status": "✅ Aktivní",
     "first_seen": "2026-11-25",
     "fingerprint": "Pozemek_x_4100000"
   },
@@ -412,7 +412,7 @@
     "price": "13 500 000 Kč",
     "url": "https://reality.bazos.cz/inzerat/226931925/prodej-rd-celakovice-sedlcanky.php",
     "source": "Bazoš.cz",
-    "status": "🔥 Novinka",
+    "status": "✅ Aktivní",
     "first_seen": "2026-11-25",
     "fingerprint": "Dům_x_13500000"
   }
