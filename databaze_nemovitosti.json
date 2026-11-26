@@ -214,7 +214,7 @@
     "price": "15 490 000 Kč (původně 15 980 000 Kč)",
     "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice-ferlesova/6ac79074fb3f98020a00f0de/",
     "source": "Reality.iDNES",
-    "status": "📉 Změna ceny",
+    "status": "❌ Staženo z inzerce",
     "first_seen": "2026-10-20",
     "fingerprint": "Dům_151_16000000"
   },
@@ -259,7 +259,7 @@
     "price": "10 500 000 Kč",
     "url": "https://reality.idnes.cz/detail/prodej/dum/celakovice-v-prokope/6ad77158230ff360a4001394/",
     "source": "Reality.iDNES",
-    "status": "✅ Aktivní",
+    "status": "❌ Staženo z inzerce",
     "first_seen": "2026-10-20",
     "fingerprint": "Dům_150_10500000"
   },
@@ -415,5 +415,23 @@
     "status": "✅ Aktivní",
     "first_seen": "2026-11-25",
     "fingerprint": "Dům_x_13500000"
+  },
+  "idnes_6b08407f28fe0b47e5077c56": {
+    "title": "[Pozemek] prodej pozemku 604 m² (Čelákovice)",
+    "price": "217 691 Kč (360 Kč/m²\n\t\t\t)",
+    "url": "https://reality.idnes.cz/detail/prodej/pozemek/celakovice/6b08407f28fe0b47e5077c56/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-11-26",
+    "fingerprint": "Pozemek_604_217700000"
+  },
+  "idnes_6b08393471c66772490f8b8d": {
+    "title": "[Pozemek] prodej pole 1 502 m² (Čelákovice)",
+    "price": "66 093 Kč (44 Kč/m²\n\t\t\t)",
+    "url": "https://reality.idnes.cz/detail/prodej/pozemek/celakovice/6b08393471c66772490f8b8d/",
+    "source": "Reality.iDNES",
+    "status": "🔥 Novinka",
+    "first_seen": "2026-11-26",
+    "fingerprint": "Pozemek_502_6600000"
   }
 }
