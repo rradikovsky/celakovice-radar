@@ -1,14 +1,10 @@
 # 🏠 Realitní Radar Čelákovice
 
-Poslední aktualizace: **26.11.2026 23:05:08 (ČR)**  
+Poslední aktualizace: **27.11.2026 05:18:54 (ČR)**  
 Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 | Bazoš: 8`
 
 | Status | Název / Odkaz | Cena | Zdroj | První výskyt |
 | :--- | :--- | :--- | :--- | :--- |
-| **🔥 Novinka** | [[Pozemek] prodej pozemku 604 m² (Čelákovice)](https://reality.idnes.cz/detail/prodej/pozemek/celakovice/6b08407f28fe0b47e5077c56/) | 217 691 Kč (360 Kč/m²
-			) | Reality.iDNES | 2026-11-26 |
-| **🔥 Novinka** | [[Pozemek] prodej pole 1 502 m² (Čelákovice)](https://reality.idnes.cz/detail/prodej/pozemek/celakovice/6b08393471c66772490f8b8d/) | 66 093 Kč (44 Kč/m²
-			) | Reality.iDNES | 2026-11-26 |
 | **📉 Změna ceny** | [[Pozemek/Jiné] prodejstavebního pozemku 767 m² (Druhá, Čelákovice - Záluží)](https://reality.idnes.cz/detail/prodej/pozemek/celakovice-druha/6ad1cb3e9b46a3cb7a085318/) | 8 437 000 Kč (11 000 Kč/m²
 			) (původně 8 437 000 Kč(11 000 Kč/m²
 			)) | Reality.iDNES | 2026-10-20 |
@@ -51,6 +47,10 @@ Stav posledního skenu (nalezeno aktivních): `Sreality: 0 | Reality.iDNES: 26 |
 			) | Reality.iDNES | 2026-11-25 |
 | **✅ Aktivní** | [[Pozemek] Zemědělská půda, prodej, Sedlčánky, Čelákovice, Praha východ](https://reality.bazos.cz/inzerat/226925815/zemedelska-puda-prodej-sedlcanky-celakovice-praha-vychod.php) | 4 115 428 Kč | Bazoš.cz | 2026-11-25 |
 | **✅ Aktivní** | [[Dům] Prodej RD Čelákovice - Sedlčánky](https://reality.bazos.cz/inzerat/226931925/prodej-rd-celakovice-sedlcanky.php) | 13 500 000 Kč | Bazoš.cz | 2026-11-25 |
+| **✅ Aktivní** | [[Pozemek] prodej pozemku 604 m² (Čelákovice)](https://reality.idnes.cz/detail/prodej/pozemek/celakovice/6b08407f28fe0b47e5077c56/) | 217 691 Kč (360 Kč/m²
+			) | Reality.iDNES | 2026-11-26 |
+| **✅ Aktivní** | [[Pozemek] prodej pole 1 502 m² (Čelákovice)](https://reality.idnes.cz/detail/prodej/pozemek/celakovice/6b08393471c66772490f8b8d/) | 66 093 Kč (44 Kč/m²
+			) | Reality.iDNES | 2026-11-26 |
 | **❌ Staženo z inzerce** | [[Bazoš Byt] Prodej bytu 2+1, 57 m², Čelákovice, ul. náměstí 5. května](https://reality.bazos.cz/inzerat/224876656/prodej-bytu-21-57-m-celakovice-ul-namesti-5-kvetna.php) | 6 199 999 Kč | Bazoš.cz | 2026-10-19 |
 | **❌ Staženo z inzerce** | [[Bazoš Pozemek] Prodej pozemku 4264 m2 Přístavní, Čelákovice](https://reality.bazos.cz/inzerat/223189436/prodej-pozemku-4264-m2-pristavni-celakovice.php) | 13 800 000 Kč | Bazoš.cz | 2026-10-19 |
 | **❌ Staženo z inzerce** | [[Bazoš Garáž] Garáž Čalákovice](https://reality.bazos.cz/inzerat/223136340/garaz-calakovice.php) | 900 000 Kč | Bazoš.cz | 2026-10-19 |
